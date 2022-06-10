@@ -18,9 +18,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private AuthorityRepository authorityRepository;
-
     public List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
@@ -72,6 +69,8 @@ public class UserService {
         dto.enabled = user.isEnabled();
         dto.apikey = user.getApikey();
         dto.email = user.getEmail();
+        dto.name = user.GetName();
+        dto.city = user.GetCity();
         return dto;
     }
 
@@ -84,6 +83,8 @@ public class UserService {
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
+        user.setName(userDto.setName());
+        user.setCity(userDto.setCity());
 
         return user;
     }
