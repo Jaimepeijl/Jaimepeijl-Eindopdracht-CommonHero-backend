@@ -1,5 +1,4 @@
 package nl.novi.eindopdrachtcommonhero.services;
-
 import nl.novi.eindopdrachtcommonhero.dtos.UserDto;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.UsernameNotFoundException;
@@ -43,8 +42,6 @@ public class UserService {
     }
 
     public String createUser(UserDto userDto) {
-        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        userDto.setApikey(randomString);
         User newUser = userRepository.save(toUser(userDto));
         return newUser.getUsername();
     }
@@ -69,8 +66,8 @@ public class UserService {
         dto.enabled = user.isEnabled();
         dto.apikey = user.getApikey();
         dto.email = user.getEmail();
-        dto.name = user.GetName();
-        dto.city = user.GetCity();
+        dto.name = user.getName();
+        dto.city = user.getCity();
         return dto;
     }
 
@@ -83,8 +80,8 @@ public class UserService {
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
-        user.setName(userDto.setName());
-        user.setCity(userDto.setCity());
+        user.setName(userDto.getName());
+        user.setCity(userDto.getCity());
 
         return user;
     }

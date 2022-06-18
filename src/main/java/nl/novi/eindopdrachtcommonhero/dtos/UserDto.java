@@ -25,10 +25,10 @@ public class UserDto {
     public String getEmail() {
         return email;
     }
-    public String GetName() {
+    public String getName() {
         return name;
     }
-    public String GetCity() {
+    public String getCity() {
         return city;
     }
     public void setUsername(String username) {
