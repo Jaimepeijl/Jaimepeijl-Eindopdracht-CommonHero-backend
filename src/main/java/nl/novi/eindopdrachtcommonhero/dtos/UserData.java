@@ -1,7 +1,8 @@
 package nl.novi.eindopdrachtcommonhero.dtos;
 
-public class UserDto {
+public class UserData {
 
+    public Long id;
     public String username;
     public String password;
     public Boolean enabled;
@@ -9,6 +10,17 @@ public class UserDto {
     public String email;
     public String name;
     public String city;
+
+    public UserData(Long id, String username, String password, Boolean enabled, String apikey, String email, String name, String city) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.apikey = apikey;
+        this.email = email;
+        this.name = name;
+        this.city = city;
+    }
 
     public String getUsername() {
         return username;
@@ -31,6 +43,15 @@ public class UserDto {
     public String getCity() {
         return city;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -52,4 +73,6 @@ public class UserDto {
     public void setCity(String city) {
         this.city = city;
     }
+
+
 }
