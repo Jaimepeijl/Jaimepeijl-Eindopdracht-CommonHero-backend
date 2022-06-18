@@ -1,15 +1,17 @@
 package nl.novi.eindopdrachtcommonhero.models;
 
+
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
-@Table(name = "users")
+@Table(name ="users")
 public class User {
 
     @Id
-    @Column(nullable = false, unique = true)
+    @GeneratedValue
+    private Long id;
+
     private String username;
 
     @Column(nullable = false, length = 255)
@@ -17,19 +19,34 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled = true;
-
-    @Column
     private String apikey;
-
-    @Column
     private String email;
+    private String name;
+    private String city;
 
-    @Column
-    public String name;
+    public User(String username, String password, boolean enabled, String apikey, String email, String name, String city) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.apikey = apikey;
+        this.email = email;
+        this.name = name;
+        this.city = city;
+    }
 
-    @Column
-    public String city;
+    public Long getId() {
+        return id;
+    }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User() {}
     public String getUsername() {
         return username;
     }
@@ -45,7 +62,7 @@ public class User {
     public String getEmail() {
         return email;
     }
-    public String GetName() {
+    public String getName() {
         return name;
     }
     public String GetCity() {

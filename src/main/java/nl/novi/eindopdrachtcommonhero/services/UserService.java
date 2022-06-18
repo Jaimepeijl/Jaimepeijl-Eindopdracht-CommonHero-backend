@@ -1,91 +1,88 @@
 package nl.novi.eindopdrachtcommonhero.services;
 
-import nl.novi.eindopdrachtcommonhero.dtos.UserDto;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
+import nl.novi.eindopdrachtcommonhero.dtos.UserData;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
-import nl.novi.eindopdrachtcommonhero.exceptions.UsernameNotFoundException;
+import nl.novi.eindopdrachtcommonhero.exceptions.UserNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.User;
 import nl.novi.eindopdrachtcommonhero.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<UserDto> getUsers() {
-        List<UserDto> collection = new ArrayList<>();
-        List<User> list = userRepository.findAll();
-        for (User user : list) {
-            collection.add(fromUser(user));
+    public User getUser(Long id) {
+        return this.userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+
+    public boolean userExists(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)){
+            throw new UserNotFoundException();
         }
-        return collection;
+        userRepository.deleteById(id);
     }
 
-    public UserDto getUser(String username) {
-        UserDto dto = new UserDto();
-        Optional<User> user = userRepository.findById(username);
-        if (user.isPresent()){
-            dto = fromUser(user.get());
-        }else {
-            throw new UsernameNotFoundException(username);
-        }
-        return dto;
-    }
+    public UserData createUser(User user) {
 
-    public boolean userExists(String username) {
-        return userRepository.existsById(username);
-    }
-
-    public String createUser(UserDto userDto) {
-        String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-        userDto.setApikey(randomString);
-        User newUser = userRepository.save(toUser(userDto));
-        return newUser.getUsername();
-    }
-
-    public void deleteUser(String username) {
-        userRepository.deleteById(username);
-    }
-
-    public void updateUser(String username, UserDto newUser) {
-        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
-        User user = userRepository.findById(username).get();
-        user.setPassword(newUser.getPassword());
         userRepository.save(user);
+
+        return this.createUserDto(user);
+
     }
 
-    public static UserDto fromUser(User user){
+    public UserData updateUser(Long id, UserRequest newUser) {
+        if (!userRepository.existsById(id)) throw new RecordNotFoundException();
 
-        var dto = new UserDto();
+        User user = this.getUser(id);
 
-        dto.username = user.getUsername();
-        dto.password = user.getPassword();
-        dto.enabled = user.isEnabled();
-        dto.apikey = user.getApikey();
-        dto.email = user.getEmail();
-        dto.name = user.GetName();
-        dto.city = user.GetCity();
-        return dto;
+        user.setPassword(newUser.password);
+        user.setUsername(newUser.username);
+        user.setName(newUser.name);
+        user.setApikey(newUser.apikey);
+        user.setCity(newUser.city);
+        user.setEmail(newUser.email);
+        user.setEnabled(newUser.enabled);
+
+        this.userRepository.save(user);
+        return this.createUserDto(user);
     }
 
-    public User toUser(UserDto userDto) {
+
+
+    public User toUser(UserData userData) {
 
         var user = new User();
 
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword());
-        user.setEnabled(userDto.getEnabled());
-        user.setApikey(userDto.getApikey());
-        user.setEmail(userDto.getEmail());
-        user.setName(userDto.setName());
-        user.setCity(userDto.setCity());
+        user.setUsername(userData.getUsername());
+        user.setPassword(userData.getPassword());
+        user.setEnabled(userData.getEnabled());
+        user.setApikey(userData.getApikey());
+        user.setEmail(userData.getEmail());
+        user.setName(userData.getName());
+        user.setCity(userData.getCity());
 
         return user;
+    }
+
+    public UserData createUserDto(User user){
+        return new UserData(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.isEnabled(),
+                user.getApikey(),
+                user.getEmail(),
+                user.getName(),
+                user.getCity()
+        );
     }
 }
