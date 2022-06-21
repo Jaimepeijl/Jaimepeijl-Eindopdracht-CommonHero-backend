@@ -1,5 +1,6 @@
 package nl.novi.eindopdrachtcommonhero.models;
-
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 
@@ -9,7 +10,16 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "user_sequence"),
+                    @Parameter(name = "initial_value", value = "1000"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
     private Long id;
 
     private String username;
@@ -23,6 +33,9 @@ public class User {
     private String email;
     private String name;
     private String city;
+
+    @OneToOne
+    FileUploadResponse file;
 
     public User(String username, String password, boolean enabled, String apikey, String email, String name, String city) {
         this.username = username;
@@ -65,8 +78,8 @@ public class User {
     public String getName() {
         return name;
     }
-    public String getCity() {
-        return city;
+    public FileUploadResponse getFile() {
+        return file;
     }
     public void setUsername(String username) {
         this.username = username;
@@ -88,6 +101,9 @@ public class User {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+    public void setFile(FileUploadResponse file) {
+        this.file = file;
     }
 
 }

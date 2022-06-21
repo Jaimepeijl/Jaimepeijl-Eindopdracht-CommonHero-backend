@@ -4,15 +4,31 @@ import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
 import nl.novi.eindopdrachtcommonhero.dtos.UserData;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.UserNotFoundException;
+import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.User;
+import nl.novi.eindopdrachtcommonhero.repositories.FileUploadRepository;
 import nl.novi.eindopdrachtcommonhero.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
-    @Autowired
+
     private UserRepository userRepository;
+    private FileUploadRepository uploadRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository, FileUploadRepository uploadRepository) {
+        this.userRepository = userRepository;
+        this.uploadRepository = uploadRepository;
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
 
     public User getUser(Long id) {
         return this.userRepository.findById(id)
@@ -25,7 +41,7 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)){
+        if (!userRepository.existsById(id)) {
             throw new UserNotFoundException();
         }
         userRepository.deleteById(id);
@@ -57,7 +73,6 @@ public class UserService {
     }
 
 
-
     public User toUser(UserData userData) {
 
         var user = new User();
@@ -73,7 +88,7 @@ public class UserService {
         return user;
     }
 
-    public UserData createUserDto(User user){
+    public UserData createUserDto(User user) {
         return new UserData(
                 user.getId(),
                 user.getUsername(),
@@ -84,5 +99,25 @@ public class UserService {
                 user.getName(),
                 user.getCity()
         );
+    }
+
+    public void assignPhotoToUser(String name, Long id) {
+
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        Optional<FileUploadResponse> fileUploadResponse = uploadRepository.findByFileName(name);
+
+        if (optionalUser.isPresent() && fileUploadResponse.isPresent()) {
+
+            FileUploadResponse photo = fileUploadResponse.get();
+
+            User user = optionalUser.get();
+
+            user.setFile(photo);
+
+            userRepository.save(user);
+
+        }
+
     }
 }
