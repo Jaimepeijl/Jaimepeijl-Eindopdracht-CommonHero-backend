@@ -1,5 +1,6 @@
 package nl.novi.eindopdrachtcommonhero.controllers;
 
+import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
@@ -7,6 +8,7 @@ import nl.novi.eindopdrachtcommonhero.models.Vacancy;
 import nl.novi.eindopdrachtcommonhero.services.VacancyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,11 +40,12 @@ public class VacancyController {
     }
 
     @PostMapping
-    private Vacancy createVacancy(@RequestBody VacancyRequest vacancyRequest){
+    private ResponseEntity<Object> createVacancy(@RequestBody VacancyRequest vacancyRequest){
 
-        Vacancy vacancy = new Vacancy(vacancyRequest.publisher,
-                vacancyRequest.hours, vacancyRequest.searchOrOffer, vacancyRequest.description);
-        return vacancyService.createVacancy(vacancy);
+        VacancyData vacancyData = vacancyService.createVacancy(vacancyRequest);
+
+        return ResponseEntity.created(null).body(vacancyData);
+
     }
 
     @GetMapping("/vacancies/{id}")
@@ -54,14 +57,14 @@ public class VacancyController {
         }
     }
 
-//    @PutMapping()
-//    private VacancyData updateUser(@RequestBody UserRequest userRequest){
-//        try{
-//            return userService.updateUser(userRequest.id, userRequest);
-//        } catch(UserNotFoundException e){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @PutMapping()
+    private VacancyData updateVacancy(@RequestBody VacancyRequest vacancyRequest){
+        try{
+            return vacancyService.updateVacancy(vacancyRequest.id, vacancyRequest);
+        } catch(VacancyNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @DeleteMapping("/vacancies/{id}")
     private void deleteVacancy(@PathVariable Long id){

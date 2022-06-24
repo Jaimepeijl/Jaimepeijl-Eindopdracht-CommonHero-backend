@@ -40,6 +40,10 @@ public class Vacancy {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public User getPublisher() {
         return publisher;
     }
@@ -73,7 +77,7 @@ public class Vacancy {
         this.hours = aantalUur;
     }
 
-    public void setSearchOrOffer(boolean jobOffer) {
+    public void setSearchOrOffer(String jobOffer) {
         this.searchOrOffer = searchOrOffer;
     }
 

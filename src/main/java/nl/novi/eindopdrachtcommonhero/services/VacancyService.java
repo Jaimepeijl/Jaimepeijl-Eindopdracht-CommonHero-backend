@@ -1,7 +1,13 @@
 package nl.novi.eindopdrachtcommonhero.services;
 
+import nl.novi.eindopdrachtcommonhero.controllers.dto.UserData;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyData;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyRequest;
+import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
+import nl.novi.eindopdrachtcommonhero.models.User;
 import nl.novi.eindopdrachtcommonhero.models.Vacancy;
 import nl.novi.eindopdrachtcommonhero.repositories.FileUploadRepository;
 import nl.novi.eindopdrachtcommonhero.repositories.VacancyRepository;
@@ -37,9 +43,43 @@ public class VacancyService {
         }
         vacancyRepository.deleteById(id);
     }
-    public Vacancy createVacancy (Vacancy vacancy){
+    public VacancyData createVacancy (VacancyRequest vacancyRequest){
+        Vacancy vacancy = toVacancy(vacancyRequest);
         vacancyRepository.save(vacancy);
-        return this.createVacancy(vacancy);
+        return this.createVacancyDto(vacancy);
+    }
+    public VacancyData updateVacancy(Long id, VacancyRequest newVacancy) {
+        if (!vacancyRepository.existsById(id)) throw new RecordNotFoundException();
+
+        Vacancy vacancy = this.getVacancy(id);
+
+        vacancy.setPublisher(newVacancy.publisher);
+        vacancy.setHours(newVacancy.hours);
+        vacancy.setDescription(newVacancy.description);
+
+        this.vacancyRepository.save(vacancy);
+        return this.createVacancyDto(vacancy);
+    }
+
+    public Vacancy toVacancy(VacancyRequest vacancyRequest){
+        var vacancy = new Vacancy();
+
+        vacancy.setId(vacancyRequest.getId());
+        vacancy.setPublisher(vacancyRequest.getPublisher());
+        vacancy.setSearchOrOffer(vacancyRequest.isSearchOrOffer());
+        vacancy.setDescription(vacancyRequest.getDescription());
+
+        return vacancy;
+    }
+
+    public VacancyData createVacancyDto(Vacancy vacancy) {
+        return new VacancyData(
+                vacancy.getId(),
+                vacancy.getPublisher(),
+                vacancy.getHours(),
+                vacancy.isSearchOrOffer(),
+                vacancy.getDescription()
+        );
     }
 
     public void assignPhotoToVacancy(String fileName, Long id) {
