@@ -1,7 +1,7 @@
 package nl.novi.eindopdrachtcommonhero.services;
 
 import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
-import nl.novi.eindopdrachtcommonhero.dtos.UserData;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.UserData;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.UserNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.Authority;
@@ -49,11 +49,11 @@ public class UserService {
         userRepository.deleteById(username);
     }
 
-    public UserData createUser(User user) {
+    public String createUser(UserData userData) {
 
-        userRepository.save(user);
+        User newUser = userRepository.save(toUser(userData));
 
-        return this.createUserDto(user);
+        return newUser.getUsername();
 
     }
 
@@ -71,7 +71,6 @@ public class UserService {
         this.userRepository.save(user);
         return this.createUserDto(user);
     }
-
 
     public User toUser(UserData userData) {
 

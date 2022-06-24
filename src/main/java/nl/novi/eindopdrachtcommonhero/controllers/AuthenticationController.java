@@ -1,5 +1,8 @@
 package nl.novi.eindopdrachtcommonhero.controllers;
 
+import nl.novi.eindopdrachtcommonhero.payload.AuthenticationRequest;
+import nl.novi.eindopdrachtcommonhero.payload.AuthenticationResponse;
+import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +19,10 @@ import java.security.Principal;
 @RestController
 public class AuthenticationController {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    @Autowired
     JwtUtil jwtUtl;
 
     @GetMapping(value = "/authenticated")
@@ -45,8 +45,7 @@ public class AuthenticationController {
             throw new Exception("Incorrect username or password", ex);
         }
 
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(username);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         final String jwt = jwtUtl.generateToken(userDetails);
 

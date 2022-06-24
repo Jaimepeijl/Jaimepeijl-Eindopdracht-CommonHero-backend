@@ -1,7 +1,7 @@
 package nl.novi.eindopdrachtcommonhero.controllers;
 
 import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
-import nl.novi.eindopdrachtcommonhero.dtos.UserData;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.UserData;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.UserNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
