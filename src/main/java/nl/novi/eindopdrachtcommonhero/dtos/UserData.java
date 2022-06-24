@@ -1,25 +1,22 @@
 package nl.novi.eindopdrachtcommonhero.dtos;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import nl.novi.eindopdrachtcommonhero.models.Authority;
+
+import java.util.Set;
+
 public class UserData {
 
     public Long id;
     public String username;
     public String password;
-    public Boolean enabled;
-    public String apikey;
     public String email;
     public String name;
     public String city;
+    @JsonSerialize
+    public Set<Authority> authorities;
 
-    public UserData(Long id, String username, String password, Boolean enabled, String apikey, String email, String name, String city) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.apikey = apikey;
-        this.email = email;
-        this.name = name;
-        this.city = city;
+    public UserData(Long id, String username, String password, String email, String name, String city) {
     }
 
     public String getUsername() {
@@ -27,12 +24,6 @@ public class UserData {
     }
     public String getPassword() {
         return password;
-    }
-    public Boolean getEnabled() {
-        return enabled;
-    }
-    public String getApikey() {
-        return apikey;
     }
     public String getEmail() {
         return email;
@@ -43,9 +34,11 @@ public class UserData {
     public String getCity() {
         return city;
     }
-
     public Long getId() {
         return id;
+    }
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
     public void setId(Long id) {
@@ -58,12 +51,6 @@ public class UserData {
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-    public void setApikey(String apikey) {
-        this.apikey = apikey;
-    }
     public void setEmail(String email) {
         this.email = email;
     }
@@ -72,6 +59,9 @@ public class UserData {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 
 

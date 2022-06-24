@@ -4,6 +4,7 @@ import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
 import nl.novi.eindopdrachtcommonhero.dtos.UserData;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.UserNotFoundException;
+import nl.novi.eindopdrachtcommonhero.models.Authority;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.User;
 import nl.novi.eindopdrachtcommonhero.repositories.FileUploadRepository;
@@ -13,14 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
     private FileUploadRepository uploadRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository, FileUploadRepository uploadRepository) {
         this.userRepository = userRepository;
         this.uploadRepository = uploadRepository;
@@ -30,21 +32,21 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUser(Long id) {
-        return this.userRepository.findById(id)
+    public User getUser(String username) {
+        return this.userRepository.findById(username)
                 .orElseThrow(UserNotFoundException::new);
     }
 
 
-    public boolean userExists(Long id) {
-        return userRepository.existsById(id);
+    public boolean userExists(String username) {
+        return userRepository.existsById(username);
     }
 
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
+    public void deleteUser(String username) {
+        if (!userRepository.existsById(username)) {
             throw new UserNotFoundException();
         }
-        userRepository.deleteById(id);
+        userRepository.deleteById(username);
     }
 
     public UserData createUser(User user) {
@@ -55,18 +57,16 @@ public class UserService {
 
     }
 
-    public UserData updateUser(Long id, UserRequest newUser) {
-        if (!userRepository.existsById(id)) throw new RecordNotFoundException();
+    public UserData updateUser(String username, UserRequest newUser) {
+        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
 
-        User user = this.getUser(id);
+        User user = this.getUser(username);
 
         user.setPassword(newUser.password);
         user.setUsername(newUser.username);
         user.setName(newUser.name);
-        user.setApikey(newUser.apikey);
         user.setCity(newUser.city);
         user.setEmail(newUser.email);
-        user.setEnabled(newUser.enabled);
 
         this.userRepository.save(user);
         return this.createUserDto(user);
@@ -79,8 +79,6 @@ public class UserService {
 
         user.setUsername(userData.getUsername());
         user.setPassword(userData.getPassword());
-        user.setEnabled(userData.getEnabled());
-        user.setApikey(userData.getApikey());
         user.setEmail(userData.getEmail());
         user.setName(userData.getName());
         user.setCity(userData.getCity());
@@ -93,17 +91,15 @@ public class UserService {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                user.isEnabled(),
-                user.getApikey(),
                 user.getEmail(),
                 user.getName(),
                 user.getCity()
         );
     }
 
-    public void assignPhotoToUser(String name, Long id) {
+    public void assignPhotoToUser(String name, String username) {
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(username);
 
         Optional<FileUploadResponse> fileUploadResponse = uploadRepository.findByFileName(name);
 
@@ -116,8 +112,27 @@ public class UserService {
             user.setFile(photo);
 
             userRepository.save(user);
-
         }
+    }
+    public void addAuthority(String username, String authority) {
 
+        if (!userRepository.existsById(username)) throw new UserNotFoundException();
+        User user = userRepository.findById(username).get();
+        user.addAuthority(new Authority(username, authority));
+        userRepository.save(user);
+    }
+    public Set<Authority> getAuthorities(String username) {
+        if (!userRepository.existsById(username)) throw new UserNotFoundException();
+        User user = userRepository.findById(username).get();
+        UserData userData = createUserDto(user);
+        return userData.getAuthorities();
+    }
+
+    public void removeAuthority(String username, String authority) {
+        if (!userRepository.existsById(username)) throw new UserNotFoundException();
+        User user = userRepository.findById(username).get();
+        Authority authorityToRemove = user.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        user.removeAuthority(authorityToRemove);
+        userRepository.save(user);
     }
 }

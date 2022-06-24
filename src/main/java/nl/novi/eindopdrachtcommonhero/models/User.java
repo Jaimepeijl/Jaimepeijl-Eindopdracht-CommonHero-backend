@@ -3,6 +3,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -22,14 +24,13 @@ public class User {
     )
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false, length = 255)
     private String password;
 
     @Column(nullable = false)
-    private boolean enabled = true;
-    private String apikey;
     private String email;
     private String name;
     private String city;
@@ -37,14 +38,25 @@ public class User {
     @OneToOne
     FileUploadResponse file;
 
-    public User(String username, String password, boolean enabled, String apikey, String email, String name, String city) {
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
+
+    public User(String username, Long id, String password, String email, String name, String city) {
         this.username = username;
+        this.id = id;
         this.password = password;
-        this.enabled = enabled;
-        this.apikey = apikey;
         this.email = email;
         this.name = name;
         this.city = city;
+    }
+
+    public User() {
+
     }
 
     public Long getId() {
@@ -58,19 +70,11 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public User() {}
     public String getUsername() {
         return username;
     }
     public String getPassword() {
         return password;
-    }
-    public boolean isEnabled() {
-        return enabled;
-    }
-    public String getApikey() {
-        return apikey;
     }
     public String getEmail() {
         return email;
@@ -87,12 +91,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-    public void setApikey(String apikey) {
-        this.apikey = apikey;
-    }
     public void setEmail(String email) {
         this.email = email;
     }
@@ -105,5 +103,15 @@ public class User {
     public void setFile(FileUploadResponse file) {
         this.file = file;
     }
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
+    }
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
+    }
+
 
 }

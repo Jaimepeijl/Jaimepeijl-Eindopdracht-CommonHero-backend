@@ -42,9 +42,6 @@ public class VacancyService {
         return this.createVacancy(vacancy);
     }
 
-
-
-
     public void assignPhotoToVacancy(String fileName, Long id) {
         Optional<Vacancy> optionalVacancy = vacancyRepository.findById(id);
         Optional<FileUploadResponse> fileUploadResponse = uploadRepository.findByFileName(fileName);

@@ -21,39 +21,39 @@ public class Vacancy {
     private Long id;
 
     @OneToOne()
-    private User jobPublisher;
-    private int aantalUur;
-    private boolean jobOffer; //TODO: twijfels over de naam.
-    private String beschrijving;
+    private User publisher;
+    private int hours;
+    private String searchOrOffer;
+    private String description;
 
     @OneToOne
     FileUploadResponse file;
 
-    public Vacancy(User jobPublisher, int aantalUur, boolean jobOffer, String beschrijving) {
-        this.jobPublisher = jobPublisher;
-        this.aantalUur = aantalUur;
-        this.jobOffer = jobOffer;
-        this.beschrijving = beschrijving;
+    public Vacancy(User jobPublisher, int aantalUur, String searchOrOffer, String description) {
+        this.publisher = jobPublisher;
+        this.hours = aantalUur;
+        this.searchOrOffer = searchOrOffer;
+        this.description = description;
     }
 
     public Vacancy() {
 
     }
 
-    public User getJobPublisher() {
-        return jobPublisher;
+    public User getPublisher() {
+        return publisher;
     }
 
-    public int getAantalUur() {
-        return aantalUur;
+    public int getHours() {
+        return hours;
     }
 
-    public boolean isJobOffer() {
-        return jobOffer;
+    public String isSearchOrOffer() {
+        return searchOrOffer;
     }
 
-    public String getBeschrijving() {
-        return beschrijving;
+    public String getDescription() {
+        return description;
     }
 
     public FileUploadResponse getFile() {
@@ -65,20 +65,20 @@ public class Vacancy {
         this.id = id;
     }
 
-    public void setJobPublisher(User jobPublisher) {
-        this.jobPublisher = jobPublisher;
+    public void setPublisher(User jobPublisher) {
+        this.publisher = jobPublisher;
     }
 
-    public void setAantalUur(int aantalUur) {
-        this.aantalUur = aantalUur;
+    public void setHours(int aantalUur) {
+        this.hours = aantalUur;
     }
 
-    public void setJobOffer(boolean jobOffer) {
-        this.jobOffer = jobOffer;
+    public void setSearchOrOffer(boolean jobOffer) {
+        this.searchOrOffer = searchOrOffer;
     }
 
-    public void setBeschrijving(String beschrijving) {
-        this.beschrijving = beschrijving;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setFile(FileUploadResponse file) {

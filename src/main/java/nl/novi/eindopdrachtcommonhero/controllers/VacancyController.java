@@ -40,8 +40,8 @@ public class VacancyController {
     @PostMapping
     private Vacancy createVacancy(@RequestBody VacancyRequest vacancyRequest){
 
-        Vacancy vacancy = new Vacancy(vacancyRequest.jobPublisher,
-                vacancyRequest.aantalUur, vacancyRequest.jobOffer, vacancyRequest.beschrijving);
+        Vacancy vacancy = new Vacancy(vacancyRequest.publisher,
+                vacancyRequest.hours, vacancyRequest.searchOrOffer, vacancyRequest.description);
         return vacancyService.createVacancy(vacancy);
     }
 
