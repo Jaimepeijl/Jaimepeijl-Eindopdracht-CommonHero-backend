@@ -18,8 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SpringSecurityConfig extends
-        WebSecurityConfigurerAdapter {
+public class SpringSecurityConfig {
 
     private JwtRequestFilter jwtRequestFilter;
 
@@ -27,14 +26,14 @@ public class SpringSecurityConfig extends
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    @Override
+
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER").and()
                 .withUser("admin").password("password").roles("USER", "ADMIN");
     }
-    @Override
+
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic()

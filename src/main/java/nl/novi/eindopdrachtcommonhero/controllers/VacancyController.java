@@ -24,7 +24,6 @@ public class VacancyController {
     private final VacancyService vacancyService;
     private final PhotoController photoController;
 
-    @Autowired
     public VacancyController(VacancyService vacancyService, PhotoController photoController) {
         this.vacancyService = vacancyService;
         this.photoController = photoController;
