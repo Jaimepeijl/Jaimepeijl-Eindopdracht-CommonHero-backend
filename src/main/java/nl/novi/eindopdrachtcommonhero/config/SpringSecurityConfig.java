@@ -1,10 +1,13 @@
 package nl.novi.eindopdrachtcommonhero.config;
 
 import nl.novi.eindopdrachtcommonhero.filter.JwtRequestFilter;
+import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,37 +21,60 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SpringSecurityConfig {
+public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
+    @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
         auth.inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER").and()
-                .withUser("admin").password("password").roles("USER", "ADMIN");
+                .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
     }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(passwordEncoder());
+//    }
 
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic()
+                .httpBasic().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users").permitAll()
-                .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                .antMatchers("/authenticated").authenticated()
-                .antMatchers("/authenticate").permitAll()
-                .anyRequest().permitAll()
+                .antMatchers(HttpMethod.POST, "/signin").permitAll()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers(HttpMethod.GET, "/").permitAll()
+                .antMatchers(HttpMethod.GET, "/hulp-aanbieden").permitAll()
+                .antMatchers(HttpMethod.GET, "/hulp-vragen").permitAll()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtRequestFilter,  UsernamePasswordAuthenticationFilter.class);
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/gebruikers").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/gebruikers/del/**").hasRole("ADMIN")
+                .and()
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtRequestFilter,  UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable();
     }
     }

@@ -22,13 +22,12 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/gebruikers")
 public class UserController {
 
     private final UserService userService;
     private final PhotoController photoController;
 
-    @Autowired
     public UserController(UserService userService, PhotoController photoController) {
         this.userService = userService;
         this.photoController = photoController;
@@ -72,7 +71,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping("/gebruikers/del/{username}")
     private void deleteUser(@PathVariable String username){
         try{
             this.userService.deleteUser(username);

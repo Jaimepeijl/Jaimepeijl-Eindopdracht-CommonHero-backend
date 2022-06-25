@@ -22,7 +22,7 @@ public class AuthController {
     @Autowired
     JwtUtil jwtUtil;
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<Object> signIn(@RequestBody AuthDto authDto){
         UsernamePasswordAuthenticationToken up =
                 new UsernamePasswordAuthenticationToken(authDto.getUsername(), authDto.getPassword());
