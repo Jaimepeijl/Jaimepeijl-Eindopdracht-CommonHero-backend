@@ -19,9 +19,10 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private FileUploadRepository uploadRepository;
+    private final UserRepository userRepository;
+    private final FileUploadRepository uploadRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository, FileUploadRepository uploadRepository) {
         this.userRepository = userRepository;
         this.uploadRepository = uploadRepository;
@@ -32,7 +33,7 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        return this.userRepository.findById(username)
+        return this.userRepository.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
     }
 
@@ -48,11 +49,9 @@ public class UserService {
         userRepository.deleteById(username);
     }
 
-    public String createUser(UserData userData) {
+    public User createUser(UserData userData) {
 
-        User newUser = userRepository.save(toUser(userData));
-
-        return newUser.getUsername();
+        return userRepository.save(toUser(userData));
 
     }
 

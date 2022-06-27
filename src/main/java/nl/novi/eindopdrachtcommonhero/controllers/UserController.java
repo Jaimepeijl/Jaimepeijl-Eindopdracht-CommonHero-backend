@@ -10,6 +10,7 @@ import nl.novi.eindopdrachtcommonhero.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,11 +28,15 @@ public class UserController {
 
     private final UserService userService;
     private final PhotoController photoController;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, PhotoController photoController) {
+    @Autowired
+    public UserController(UserService userService, PhotoController photoController, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.photoController = photoController;
+        this.passwordEncoder = passwordEncoder;
     }
+
     @GetMapping
     @Transactional
     public List<User> getUsers(){
@@ -50,16 +55,24 @@ public class UserController {
         }
     }
 
-    @PostMapping
-    private ResponseEntity<UserData> createUser(@RequestBody UserData userData){
+    @CrossOrigin
+    @PostMapping("/signup")
+    private User registerUser(@RequestBody UserData userData){
 
-        String newUsername = userService.createUser(userData);
-        userService.addAuthority(newUsername, "ROLE_USER");
+        User user = new User();
+        user.setUsername(userData.getUsername());
+//        user.setPassword(passwordEncoder.encode(userData.getPassword()));
+        user.setPassword(userData.getPassword());
+        user.setEmail(userData.getEmail());
+        user.setName(userData.getName());
+        user.setCity(userData.getCity());
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                .buildAndExpand(newUsername).toUri();
+        userService.addAuthority(user.getUsername(), "ROLE_USER");
 
-        return ResponseEntity.created(location).build();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+//                .buildAndExpand(user.getUsername()).toUri();
+
+        return userService.createUser(userData);
     }
 
     @PutMapping()
