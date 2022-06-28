@@ -23,6 +23,7 @@ public class Vacancy {
 
     @OneToOne()
     private User publisher;
+    private String title;
     private int hours;
     private String searchOrOffer;
     private String description;
@@ -49,6 +50,10 @@ public class Vacancy {
         return publisher;
     }
 
+    public String getTitle(){
+        return title;
+    }
+
     public int getHours() {
         return hours;
     }
@@ -70,15 +75,18 @@ public class Vacancy {
         this.id = id;
     }
 
-    public void setPublisher(User jobPublisher) {
-        this.publisher = jobPublisher;
+    public void setPublisher(User publisher) {
+        this.publisher = publisher;
     }
 
-    public void setHours(int aantalUur) {
-        this.hours = aantalUur;
+    public void setTitle(String title){
+        this.title = title;
+    }
+    public void setHours(int hours) {
+        this.hours = hours;
     }
 
-    public void setSearchOrOffer(String jobOffer) {
+    public void setSearchOrOffer(String searchOrOffer) {
         this.searchOrOffer = searchOrOffer;
     }
 

@@ -3,25 +3,37 @@ package nl.novi.eindopdrachtcommonhero.controllers.dto;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.User;
 
+import javax.persistence.GeneratedValue;
+
 public class VacancyRequest {
+
+    @GeneratedValue
     public Long id;
-    public User publisher;
+
+//    public User publisher;
+    private String title;
     public int hours;
     public String searchOrOffer;
     public String description;
+
     public FileUploadResponse file;
 
     public Long getId() {
         return id;
     }
 
-    public User getPublisher() {
-        return publisher;
-    }
+//    public User getPublisher() {
+//        return publisher;
+//    }
 
+    public String getTitle(){
+    return title;
+}
     public int getHours() {
         return hours;
     }
+
+
 
     public String isSearchOrOffer() {
         return searchOrOffer;

@@ -3,11 +3,14 @@ package nl.novi.eindopdrachtcommonhero.controllers.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nl.novi.eindopdrachtcommonhero.models.Authority;
 
+import javax.persistence.GeneratedValue;
 import java.util.Set;
 
 public class UserData {
 
+    @GeneratedValue
     public Long id;
+
     public String username;
     public String password;
     public String email;

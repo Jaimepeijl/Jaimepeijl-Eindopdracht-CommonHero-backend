@@ -20,8 +20,8 @@ import java.util.Optional;
 @Service
 public class VacancyService {
 
-    private VacancyRepository vacancyRepository;
-    private FileUploadRepository uploadRepository;
+    private final VacancyRepository vacancyRepository;
+    private final FileUploadRepository uploadRepository;
 
     @Autowired
     public VacancyService(VacancyRepository vacancyRepository, FileUploadRepository uploadRepository) {
@@ -53,7 +53,7 @@ public class VacancyService {
 
         Vacancy vacancy = this.getVacancy(id);
 
-        vacancy.setPublisher(newVacancy.publisher);
+//        vacancy.setPublisher(newVacancy.publisher);
         vacancy.setHours(newVacancy.hours);
         vacancy.setDescription(newVacancy.description);
 
@@ -65,7 +65,7 @@ public class VacancyService {
         var vacancy = new Vacancy();
 
         vacancy.setId(vacancyRequest.getId());
-        vacancy.setPublisher(vacancyRequest.getPublisher());
+//        vacancy.setPublisher(vacancyRequest.getPublisher());
         vacancy.setSearchOrOffer(vacancyRequest.isSearchOrOffer());
         vacancy.setDescription(vacancyRequest.getDescription());
 
@@ -76,6 +76,7 @@ public class VacancyService {
         return new VacancyData(
                 vacancy.getId(),
                 vacancy.getPublisher(),
+                vacancy.getTitle(),
                 vacancy.getHours(),
                 vacancy.isSearchOrOffer(),
                 vacancy.getDescription()
