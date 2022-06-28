@@ -19,9 +19,10 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private FileUploadRepository uploadRepository;
+    private final UserRepository userRepository;
+    private final FileUploadRepository uploadRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository, FileUploadRepository uploadRepository) {
         this.userRepository = userRepository;
         this.uploadRepository = uploadRepository;

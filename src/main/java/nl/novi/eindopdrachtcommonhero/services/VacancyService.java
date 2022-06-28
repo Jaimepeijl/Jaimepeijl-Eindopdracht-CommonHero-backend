@@ -23,6 +23,7 @@ public class VacancyService {
     private VacancyRepository vacancyRepository;
     private FileUploadRepository uploadRepository;
 
+    @Autowired
     public VacancyService(VacancyRepository vacancyRepository, FileUploadRepository uploadRepository) {
         this.vacancyRepository = vacancyRepository;
         this.uploadRepository = uploadRepository;

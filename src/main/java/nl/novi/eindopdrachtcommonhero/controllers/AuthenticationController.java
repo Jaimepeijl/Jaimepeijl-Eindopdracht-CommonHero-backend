@@ -19,8 +19,10 @@ import java.security.Principal;
 @RestController
 public class AuthenticationController {
 
+    @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
     private CustomUserDetailsService userDetailsService;
 
     JwtUtil jwtUtl;

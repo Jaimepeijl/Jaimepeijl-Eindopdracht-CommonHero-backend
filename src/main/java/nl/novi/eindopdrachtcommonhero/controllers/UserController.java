@@ -22,12 +22,14 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/gebruikers")
+@RequestMapping
 public class UserController {
+
 
     private final UserService userService;
     private final PhotoController photoController;
 
+    @Autowired
     public UserController(UserService userService, PhotoController photoController) {
         this.userService = userService;
         this.photoController = photoController;
@@ -50,7 +52,7 @@ public class UserController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     private ResponseEntity<UserData> createUser(@RequestBody UserData userData){
 
         String newUsername = userService.createUser(userData);
