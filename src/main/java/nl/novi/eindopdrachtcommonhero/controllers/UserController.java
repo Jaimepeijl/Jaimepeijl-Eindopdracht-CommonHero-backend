@@ -29,6 +29,7 @@ public class UserController {
     private final UserService userService;
     private final PhotoController photoController;
 
+    @Autowired
     public UserController(UserService userService, PhotoController photoController) {
         this.userService = userService;
         this.photoController = photoController;
@@ -56,10 +57,10 @@ public class UserController {
     public ResponseEntity<Object> createUser(@RequestBody UserData userData){
         try{
             userService.createUser(userData);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                .buildAndExpand().toUri();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
+//                .buildAndExpand().toUri();
 
-        return ResponseEntity.created(location).build();}
+        return new ResponseEntity<>("Gebruiker aangemaakt", HttpStatus.CREATED);}
         catch (BadRequestException e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }

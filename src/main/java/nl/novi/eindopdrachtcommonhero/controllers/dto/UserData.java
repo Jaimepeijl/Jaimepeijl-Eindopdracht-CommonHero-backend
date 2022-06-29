@@ -14,10 +14,11 @@ import java.util.Set;
 public class UserData {
 
     @GeneratedValue
-    @Id
     public Long id;
 
+    @Id
     public String username;
+
     public String password;
     public String email;
     public String name;

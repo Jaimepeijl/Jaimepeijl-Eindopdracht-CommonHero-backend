@@ -12,20 +12,20 @@ import java.util.Set;
 public class User {
 
 
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "user_sequence"),
-                    @Parameter(name = "initial_value", value = "1000"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
-    )
-    @Id
+//    @GeneratedValue(generator = "sequence-generator")
+//    @GenericGenerator(
+//            name = "sequence-generator",
+//            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+//            parameters = {
+//                    @Parameter(name = "sequence_name", value = "user_sequence"),
+//                    @Parameter(name = "initial_value", value = "1000"),
+//                    @Parameter(name = "increment_size", value = "1")
+//            }
+//    )
+
     private Long id;
 
-
+    @Id
     @Column
     private String username;
 
@@ -36,6 +36,9 @@ public class User {
     private String email;
     private String name;
     private String city;
+
+    public User() {
+    }
 
     @OneToOne
     FileUploadResponse file;
@@ -98,6 +101,9 @@ public class User {
     }
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);
+    }
+    public void addAuthority(String authorityString) {
+        this.authorities.add(new Authority(this.username, authorityString));
     }
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
