@@ -57,6 +57,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .httpBasic().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -65,6 +67,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers(HttpMethod.POST, "/signin").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/vacancies").permitAll()
+                .antMatchers(HttpMethod.POST, "/gebruikers/signup").permitAll()
+                .antMatchers(HttpMethod.GET, "/gebruikers/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/*/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/").permitAll()
                 .antMatchers(HttpMethod.GET, "/hulp-aanbieden").permitAll()
                 .antMatchers(HttpMethod.GET, "/hulp-vragen").permitAll()

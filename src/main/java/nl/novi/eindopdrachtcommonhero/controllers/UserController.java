@@ -22,18 +22,18 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping
+@RequestMapping(value = "/gebruikers")
 public class UserController {
 
 
     private final UserService userService;
     private final PhotoController photoController;
 
-    @Autowired
     public UserController(UserService userService, PhotoController photoController) {
         this.userService = userService;
         this.photoController = photoController;
     }
+
     @GetMapping
     @Transactional
     public List<User> getUsers(){
@@ -44,7 +44,7 @@ public class UserController {
         return users;
     }
     @GetMapping("/{username}")
-    private void getUser(@PathVariable String username){
+    public void getUser(@PathVariable String username){
         try {
             this.userService.getUser(username);
         } catch (UserNotFoundException e){
@@ -53,28 +53,30 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    private ResponseEntity<UserData> createUser(@RequestBody UserData userData){
-
-        String newUsername = userService.createUser(userData);
-        userService.addAuthority(newUsername, "ROLE_USER");
-
+    public ResponseEntity<Object> createUser(@RequestBody UserData userData){
+        try{
+            userService.createUser(userData);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                .buildAndExpand(newUsername).toUri();
+                .buildAndExpand().toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).build();}
+        catch (BadRequestException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PutMapping()
-    private UserData updateUser(@RequestBody UserRequest userRequest){
+    @PutMapping("/{username}")
+    public ResponseEntity<Object> updateUser(@PathVariable String username, @RequestBody UserRequest userRequest){
         try{
-            return userService.updateUser(userRequest.username, userRequest);
+            userService.updateUser(userRequest.username, userRequest);
+            return new ResponseEntity<>("Gebruiker aangepast", HttpStatus.OK);
         } catch(UserNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/gebruikers/del/{username}")
-    private void deleteUser(@PathVariable String username){
+    public void deleteUser(@PathVariable String username){
         try{
             this.userService.deleteUser(username);
         } catch (UserNotFoundException e){

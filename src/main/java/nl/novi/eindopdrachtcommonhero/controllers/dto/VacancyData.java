@@ -10,13 +10,7 @@ public class VacancyData {
     public String searchOrOffer;
     public String description;
 
-    public VacancyData(Long id, User publisher, String title, int hours, String searchOrOffer, String description) {
-        this.id = id;
-        this.publisher = publisher;
-        this.title = title;
-        this.hours = hours;
-        this.searchOrOffer = searchOrOffer;
-        this.description = description;
+    public VacancyData(User publisher, String title, int hours, String searchOrOffer, String description) {
     }
 
     public Long getId() {
@@ -35,7 +29,7 @@ public class VacancyData {
         return hours;
     }
 
-    public String getSearchOrOffer() {
+    public String isSearchOrOffer() {
         return searchOrOffer;
     }
 

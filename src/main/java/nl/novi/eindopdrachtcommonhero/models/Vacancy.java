@@ -31,17 +31,6 @@ public class Vacancy {
     @OneToOne
     FileUploadResponse file;
 
-    public Vacancy(User jobPublisher, int aantalUur, String searchOrOffer, String description) {
-        this.publisher = jobPublisher;
-        this.hours = aantalUur;
-        this.searchOrOffer = searchOrOffer;
-        this.description = description;
-    }
-
-    public Vacancy() {
-
-    }
-
     public Long getId() {
         return id;
     }

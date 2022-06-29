@@ -11,27 +11,28 @@ import java.util.Set;
 @Table(name ="users")
 public class User {
 
+
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "user_sequence"),
+                    @Parameter(name = "initial_value", value = "1000"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
     @Id
-//    @GeneratedValue(generator = "sequence-generator")
-//    @GenericGenerator(
-//            name = "sequence-generator",
-//            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-//            parameters = {
-//                    @Parameter(name = "sequence_name", value = "user_sequence"),
-//                    @Parameter(name = "initial_value", value = "1000"),
-//                    @Parameter(name = "increment_size", value = "1")
-//            }
-//    )
-    @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, unique = true)
+
+    @Column
     private String username;
 
-    @Column(nullable = false, length = 255)
+    @Column
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String email;
     private String name;
     private String city;
@@ -47,19 +48,6 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-    public User(String username, Long id, String password, String email, String name, String city) {
-        this.username = username;
-        this.id = id;
-        this.password = password;
-        this.email = email;
-        this.name = name;
-        this.city = city;
-    }
-
-    public User() {
-
-    }
-
     public Long getId() {
         return id;
     }
@@ -71,6 +59,7 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getUsername() {
         return username;
     }

@@ -3,12 +3,18 @@ package nl.novi.eindopdrachtcommonhero.controllers.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nl.novi.eindopdrachtcommonhero.models.Authority;
 
+import lombok.Data;
+import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
+
+import javax.persistence.*;
 import javax.persistence.GeneratedValue;
 import java.util.Set;
 
+@Data
 public class UserData {
 
     @GeneratedValue
+    @Id
     public Long id;
 
     public String username;
@@ -16,11 +22,19 @@ public class UserData {
     public String email;
     public String name;
     public String city;
-    @JsonSerialize
-    public Set<Authority> authorities;
 
     public UserData(Long id, String username, String password, String email, String name, String city) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.city = city;
     }
+
+    FileUploadResponse file;
+
+    public Set<Authority> authorities;
 
     public String getUsername() {
         return username;
@@ -66,6 +80,4 @@ public class UserData {
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
-
-
 }

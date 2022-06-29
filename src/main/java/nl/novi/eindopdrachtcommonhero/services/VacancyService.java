@@ -1,17 +1,13 @@
 package nl.novi.eindopdrachtcommonhero.services;
 
-import nl.novi.eindopdrachtcommonhero.controllers.dto.UserData;
-import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
-import nl.novi.eindopdrachtcommonhero.models.User;
 import nl.novi.eindopdrachtcommonhero.models.Vacancy;
 import nl.novi.eindopdrachtcommonhero.repositories.FileUploadRepository;
 import nl.novi.eindopdrachtcommonhero.repositories.VacancyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +19,6 @@ public class VacancyService {
     private final VacancyRepository vacancyRepository;
     private final FileUploadRepository uploadRepository;
 
-    @Autowired
     public VacancyService(VacancyRepository vacancyRepository, FileUploadRepository uploadRepository) {
         this.vacancyRepository = vacancyRepository;
         this.uploadRepository = uploadRepository;
@@ -46,7 +41,7 @@ public class VacancyService {
     public VacancyData createVacancy (VacancyRequest vacancyRequest){
         Vacancy vacancy = toVacancy(vacancyRequest);
         vacancyRepository.save(vacancy);
-        return this.createVacancyDto(vacancy);
+        return this.createVacancyData(vacancy);
     }
     public VacancyData updateVacancy(Long id, VacancyRequest newVacancy) {
         if (!vacancyRepository.existsById(id)) throw new RecordNotFoundException();
@@ -58,7 +53,7 @@ public class VacancyService {
         vacancy.setDescription(newVacancy.description);
 
         this.vacancyRepository.save(vacancy);
-        return this.createVacancyDto(vacancy);
+        return this.createVacancyData(vacancy);
     }
 
     public Vacancy toVacancy(VacancyRequest vacancyRequest){
@@ -72,9 +67,8 @@ public class VacancyService {
         return vacancy;
     }
 
-    public VacancyData createVacancyDto(Vacancy vacancy) {
+    public VacancyData createVacancyData(Vacancy vacancy) {
         return new VacancyData(
-                vacancy.getId(),
                 vacancy.getPublisher(),
                 vacancy.getTitle(),
                 vacancy.getHours(),

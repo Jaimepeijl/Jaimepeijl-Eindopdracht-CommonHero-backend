@@ -6,6 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "authorities")
 public class Authority implements Serializable {
+
     @Id
     @Column(nullable = false)
     private String username;
@@ -13,12 +14,13 @@ public class Authority implements Serializable {
     @Column(nullable = false)
     private String authority;
 
-    public Authority() {
-
-    }
     public Authority(String username, String authority) {
         this.username = username;
         this.authority = authority;
+    }
+
+    public Authority() {
+
     }
 
     public String getUsername() {
