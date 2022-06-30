@@ -5,6 +5,7 @@ import nl.novi.eindopdrachtcommonhero.payload.AuthenticationResponse;
 import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,19 +20,14 @@ import java.security.Principal;
 @RestController
 public class AuthenticationController {
 
-    private AuthenticationManager authenticationManager;
-    private CustomUserDetailsService userDetailsService;
-    JwtUtil jwtUtl;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JwtUtil jwtUtl) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService) {
         this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.jwtUtl = jwtUtl;
-    }
-
-    @GetMapping(value = "/authenticated")
-    public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
-        return ResponseEntity.ok().body(principal);
+        this.jwtUtil = jwtUtil;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @PostMapping(value = "/authenticate")
@@ -49,9 +45,9 @@ public class AuthenticationController {
             throw new Exception("Incorrect username or password", ex);
         }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
-        final String jwt = jwtUtl.generateToken(userDetails);
+        final String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }

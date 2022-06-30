@@ -10,7 +10,7 @@ public class VacancyRequest {
     @GeneratedValue
     public Long id;
 
-//    public User publisher;
+    public String publisher;
     private String title;
     public int hours;
     public String searchOrOffer;
@@ -22,9 +22,9 @@ public class VacancyRequest {
         return id;
     }
 
-//    public User getPublisher() {
-//        return publisher;
-//    }
+    public String getPublisher() {
+        return publisher;
+    }
 
     public String getTitle(){
     return title;

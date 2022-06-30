@@ -40,16 +40,16 @@ public class VacancyController {
     }
 
     @PostMapping
-    private ResponseEntity<Object> createVacancy(@RequestBody VacancyRequest vacancyRequest){
+    public ResponseEntity<Object> createVacancy(@RequestBody VacancyRequest vacancyRequest){
 
-        VacancyData vacancyData = vacancyService.createVacancy(vacancyRequest);
+        Vacancy vacancy = vacancyService.createVacancy(vacancyRequest);
 
-        return ResponseEntity.created(null).body(vacancyData);
+        return ResponseEntity.created(null).body(vacancy);
 
     }
 
     @GetMapping("/vacancies/{id}")
-    private void getVacancy(@PathVariable Long id){
+    public void getVacancy(@PathVariable Long id){
         try {
             this.vacancyService.getVacancy(id);
         } catch (VacancyNotFoundException e){
@@ -58,7 +58,7 @@ public class VacancyController {
     }
 
     @PutMapping()
-    private VacancyData updateVacancy(@RequestBody VacancyRequest vacancyRequest){
+    public VacancyData updateVacancy(@RequestBody VacancyRequest vacancyRequest){
         try{
             return vacancyService.updateVacancy(vacancyRequest.id, vacancyRequest);
         } catch(VacancyNotFoundException e){
@@ -67,7 +67,7 @@ public class VacancyController {
     }
 
     @DeleteMapping("/vacancies/{id}")
-    private void deleteVacancy(@PathVariable Long id){
+    public void deleteVacancy(@PathVariable Long id){
         try{
             this.vacancyService.deleteVacancy(id);
         } catch (VacancyNotFoundException e){

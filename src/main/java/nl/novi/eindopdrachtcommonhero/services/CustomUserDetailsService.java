@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtcommonhero.services;
 
 import nl.novi.eindopdrachtcommonhero.models.Authority;
 import nl.novi.eindopdrachtcommonhero.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

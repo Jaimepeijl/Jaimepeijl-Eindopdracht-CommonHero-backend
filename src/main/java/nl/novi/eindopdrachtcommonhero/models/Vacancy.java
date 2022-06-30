@@ -21,8 +21,7 @@ public class Vacancy {
     @GeneratedValue
     private Long id;
 
-    @OneToOne()
-    private User publisher;
+    private String publisher;
     private String title;
     private int hours;
     private String searchOrOffer;
@@ -35,7 +34,7 @@ public class Vacancy {
         return id;
     }
 
-    public User getPublisher() {
+    public String getPublisher() {
         return publisher;
     }
 
@@ -64,7 +63,7 @@ public class Vacancy {
         this.id = id;
     }
 
-    public void setPublisher(User publisher) {
+    public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 

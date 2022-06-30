@@ -4,20 +4,25 @@ import nl.novi.eindopdrachtcommonhero.models.User;
 
 public class VacancyData {
     public Long id;
-    public User publisher;
+    public String publisher;
     private String title;
     public int hours;
     public String searchOrOffer;
     public String description;
 
-    public VacancyData(User publisher, String title, int hours, String searchOrOffer, String description) {
+    public VacancyData(String publisher, String title, int hours, String searchOrOffer, String description) {
+        this.publisher = publisher;
+        this.title = title;
+        this.hours = hours;
+        this.searchOrOffer = searchOrOffer;
+        this.description = description;
     }
 
     public Long getId() {
         return id;
     }
 
-    public User getPublisher() {
+    public String getPublisher() {
         return publisher;
     }
 
@@ -41,7 +46,7 @@ public class VacancyData {
         this.id = id;
     }
 
-    public void setPublisher(User publisher) {
+    public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 

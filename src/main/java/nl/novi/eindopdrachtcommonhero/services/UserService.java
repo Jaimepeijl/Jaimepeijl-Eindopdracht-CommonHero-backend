@@ -24,13 +24,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FileUploadRepository uploadRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, FileUploadRepository uploadRepository) {
+    public UserService(UserRepository userRepository, FileUploadRepository uploadRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.uploadRepository = uploadRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getUsers() {

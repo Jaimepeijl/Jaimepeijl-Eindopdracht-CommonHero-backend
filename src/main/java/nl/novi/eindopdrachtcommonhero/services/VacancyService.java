@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtcommonhero.services;
 
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyRequest;
+import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
@@ -38,11 +39,15 @@ public class VacancyService {
         }
         vacancyRepository.deleteById(id);
     }
-    public VacancyData createVacancy (VacancyRequest vacancyRequest){
-        Vacancy vacancy = toVacancy(vacancyRequest);
-        vacancyRepository.save(vacancy);
-        return this.createVacancyData(vacancy);
+    public Vacancy createVacancy (VacancyRequest vacancyRequest){
+        try{
+            Vacancy vacancy = toVacancy(vacancyRequest);
+            return vacancyRepository.save(vacancy);
+        } catch (Exception ex) {
+            throw new BadRequestException("Kan vacature niet aanmaken");
+        }
     }
+
     public VacancyData updateVacancy(Long id, VacancyRequest newVacancy) {
         if (!vacancyRepository.existsById(id)) throw new RecordNotFoundException();
 
@@ -60,7 +65,9 @@ public class VacancyService {
         var vacancy = new Vacancy();
 
         vacancy.setId(vacancyRequest.getId());
-//        vacancy.setPublisher(vacancyRequest.getPublisher());
+        vacancy.setPublisher(vacancyRequest.getPublisher());
+        vacancy.setTitle(vacancyRequest.getTitle());
+        vacancy.setHours(vacancyRequest.getHours());
         vacancy.setSearchOrOffer(vacancyRequest.isSearchOrOffer());
         vacancy.setDescription(vacancyRequest.getDescription());
 
