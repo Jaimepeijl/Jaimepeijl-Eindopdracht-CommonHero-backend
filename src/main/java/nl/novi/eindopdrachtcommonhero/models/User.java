@@ -36,9 +36,6 @@ public class User {
     private String name;
     private String city;
 
-    public User() {
-    }
-
     @OneToOne
     FileUploadResponse file;
 

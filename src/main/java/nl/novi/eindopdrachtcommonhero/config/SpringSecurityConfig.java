@@ -1,9 +1,7 @@
 package nl.novi.eindopdrachtcommonhero.config;
 
 import nl.novi.eindopdrachtcommonhero.filter.JwtRequestFilter;
-import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,9 +13,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 @EnableWebSecurity
@@ -25,11 +26,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
     JwtUtil jwtUtil;
-    private final  CustomUserDetailsService customUserDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    public SpringSecurityConfig(JwtUtil jwtUtil,  CustomUserDetailsService customUserDetailsService) {
+    public SpringSecurityConfig(JwtUtil jwtUtil, JwtRequestFilter jwtRequestFilter) {
         this.jwtUtil = jwtUtil;
-        this.customUserDetailsService = customUserDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
@@ -39,14 +40,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return super.userDetailsServiceBean();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.userDetailsService(customUserDetailsService);
         auth.inMemoryAuthentication()
 
                 .withUser("user").password("password").roles("USER").and()
@@ -81,6 +82,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 //                .and()
 //                .authorizeRequests().anyRequest().authenticated()
                 .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                .antMatchers(HttpMethod.POST, "/vacancies").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
@@ -88,7 +90,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/authenticate").permitAll()
                 .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(new JwtRequestFilter(jwtUtil, customUserDetailsService),  UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
     }
     }

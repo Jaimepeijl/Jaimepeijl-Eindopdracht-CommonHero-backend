@@ -22,15 +22,14 @@ import java.util.Set;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final FileUploadRepository uploadRepository;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, FileUploadRepository uploadRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.uploadRepository = uploadRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    FileUploadRepository uploadRepository;
+
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -60,7 +59,8 @@ public class UserService {
             User user = new User();
             user.setId(userData.getId());
             user.setUsername(userData.getUsername());
-            user.setPassword(passwordEncoder.encode(userData.getPassword()));
+//            user.setPassword(passwordEncoder.encode(userData.getPassword()));
+            user.setPassword(userData.getPassword());
             user.setPassword(user.getPassword());
             user.setEmail(userData.getEmail());
             user.setName(userData.getName());

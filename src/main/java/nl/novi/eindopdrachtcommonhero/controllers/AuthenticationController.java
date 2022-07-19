@@ -3,6 +3,7 @@ package nl.novi.eindopdrachtcommonhero.controllers;
 import nl.novi.eindopdrachtcommonhero.payload.AuthenticationRequest;
 import nl.novi.eindopdrachtcommonhero.payload.AuthenticationResponse;
 import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
+import nl.novi.eindopdrachtcommonhero.services.UserAuthService;
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,44 +13,31 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 @CrossOrigin
 @RestController
+@RequestMapping(value = "/authenticate")
 public class AuthenticationController {
+    UserAuthService userAuthService;
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
-    private final CustomUserDetailsService customUserDetailsService;
-
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
-        this.customUserDetailsService = customUserDetailsService;
+    @Autowired
+    public AuthenticationController(UserAuthService userAuthService) {
+        this.userAuthService = userAuthService;
     }
 
-    @PostMapping(value = "/authenticate")
+    @PostMapping(value = "")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
-        String username = authenticationRequest.getUsername();
-        String password = authenticationRequest.getPassword();
-
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-        }
-        catch (BadCredentialsException ex) {
+            AuthenticationResponse authenticationResponse = userAuthService.authenticateUser(authenticationRequest);
+            return ResponseEntity.ok(authenticationResponse);
+        } catch (UsernameNotFoundException ex) {
             throw new Exception("Incorrect username or password", ex);
         }
-
-        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
-
 }
+
+
