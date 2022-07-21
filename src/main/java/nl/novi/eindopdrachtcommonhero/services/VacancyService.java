@@ -28,6 +28,7 @@ public class VacancyService {
     public List<Vacancy> getVacancies(){
         return vacancyRepository.findAll();
     }
+
     public Vacancy getVacancy(Long id) {
         return this.vacancyRepository.findById(id)
                 .orElseThrow(VacancyNotFoundException::new);

@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name="authorities")
 @IdClass(AuthorityKey.class)
 public class Authority implements Serializable {
 
@@ -18,6 +19,9 @@ public class Authority implements Serializable {
     public Authority(String username, String authority) {
         this.username = username;
         this.authority = authority;
+    }
+
+    public Authority() {
     }
 
     public String getUsername() {

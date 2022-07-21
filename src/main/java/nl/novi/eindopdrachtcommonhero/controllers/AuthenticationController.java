@@ -24,6 +24,9 @@ import java.security.Principal;
 public class AuthenticationController {
 
     @Autowired
+    UserAuthService userAuthService;
+
+    @Autowired
     private AuthenticationManager authManager;
 
     @Autowired
@@ -31,16 +34,20 @@ public class AuthenticationController {
 
     @PostMapping()
     public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        UsernamePasswordAuthenticationToken up =
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        Authentication auth = authManager.authenticate(up);
-
-        UserDetails ud = (UserDetails) auth.getPrincipal();
-        String token = jwtUtil.generateToken(ud);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .body(token);
+//        UsernamePasswordAuthenticationToken up =
+//                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+//        Authentication auth;
+//        try{
+//            auth = authManager.authenticate(up);
+//        UserDetails ud = (UserDetails) auth.getPrincipal();
+//        String token = jwtUtil.generateToken(ud);
+        AuthenticationResponse authenticationResponse = userAuthService.authenticateUser(authenticationRequest);
+        return ResponseEntity.ok(authenticationResponse);
+//    }
+//        catch(Exception e){
+//        return ResponseEntity.ok().body(e.getMessage());
+//    }
     }
-    }
+}
 
 

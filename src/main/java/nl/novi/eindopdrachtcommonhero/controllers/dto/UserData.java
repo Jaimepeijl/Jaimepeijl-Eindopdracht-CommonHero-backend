@@ -23,14 +23,17 @@ public class UserData {
     public String email;
     public String name;
     public String city;
+    public Set<Authority> authority;
+    boolean enabled = true;
 
-    public UserData(Long id, String username, String password, String email, String name, String city) {
+    public UserData(Long id, String username, String password, String email, String name, String city, Set<Authority> authority) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
         this.city = city;
+        this.authorities = authority;
     }
 
     FileUploadResponse file;

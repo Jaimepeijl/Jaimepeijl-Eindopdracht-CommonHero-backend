@@ -11,17 +11,7 @@ import java.util.Set;
 @Table(name ="users")
 public class User {
 
-
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "user_sequence"),
-                    @Parameter(name = "initial_value", value = "1000"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
-    )
+    @GeneratedValue
     private Long id;
 
     @Id
@@ -35,6 +25,7 @@ public class User {
     private String email;
     private String name;
     private String city;
+    boolean enabled = true;
 
     @OneToOne
     FileUploadResponse file;

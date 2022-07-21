@@ -51,8 +51,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
                 .jdbcAuthentication()
                 .passwordEncoder(new BCryptPasswordEncoder())
                 .dataSource(dataSource)
-                .usersByUsernameQuery("select email, password, enabled from users where email=?")
-                .authoritiesByUsernameQuery("select email, role from users where email=?");
+                .usersByUsernameQuery("select username, password, enabled from users where username=?")
+                .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
     }
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -85,6 +85,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 //                .authorizeRequests().anyRequest().authenticated()
                 .antMatchers(HttpMethod.POST, "/authenticate/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/vacancies").permitAll()
+                .antMatchers(HttpMethod.GET, "/vacancies").permitAll()
+                .antMatchers(HttpMethod.GET, "/vacancies/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")

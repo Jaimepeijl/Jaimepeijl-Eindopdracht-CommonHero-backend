@@ -77,7 +77,6 @@ public class Vacancy {
     public void setSearchOrOffer(String searchOrOffer) {
         this.searchOrOffer = searchOrOffer;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
