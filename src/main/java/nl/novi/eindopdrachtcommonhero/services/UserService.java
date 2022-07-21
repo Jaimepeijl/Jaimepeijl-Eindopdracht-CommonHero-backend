@@ -59,7 +59,6 @@ public class UserService {
             User user = new User();
             user.setId(userData.getId());
             user.setUsername(userData.getUsername());
-//            user.setPassword(passwordEncoder.encode(userData.getPassword()));
             user.setPassword(userData.getPassword());
             user.setPassword(user.getPassword());
             user.setEmail(userData.getEmail());
