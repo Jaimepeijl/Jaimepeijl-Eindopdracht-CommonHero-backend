@@ -2,7 +2,7 @@ package nl.novi.eindopdrachtcommonhero.controllers;
 
 import nl.novi.eindopdrachtcommonhero.payload.AuthenticationRequest;
 import nl.novi.eindopdrachtcommonhero.payload.AuthenticationResponse;
-import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
+//import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
 import nl.novi.eindopdrachtcommonhero.services.UserAuthService;
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +22,25 @@ import java.security.Principal;
 @RestController
 @RequestMapping(value = "/authenticate")
 public class AuthenticationController {
-    UserAuthService userAuthService;
 
     @Autowired
-    public AuthenticationController(UserAuthService userAuthService) {
-        this.userAuthService = userAuthService;
-    }
+    private AuthenticationManager authManager;
 
-    @PostMapping(value = "")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        try {
-            AuthenticationResponse authenticationResponse = userAuthService.authenticateUser(authenticationRequest);
-            return ResponseEntity.ok(authenticationResponse);
-        } catch (UsernameNotFoundException ex) {
-            throw new Exception("Incorrect username or password", ex);
-        }
+    @Autowired
+    JwtUtil jwtUtil;
+
+    @PostMapping()
+    public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        UsernamePasswordAuthenticationToken up =
+                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        Authentication auth = authManager.authenticate(up);
+
+        UserDetails ud = (UserDetails) auth.getPrincipal();
+        String token = jwtUtil.generateToken(ud);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .body(token);
     }
-}
+    }
 
 

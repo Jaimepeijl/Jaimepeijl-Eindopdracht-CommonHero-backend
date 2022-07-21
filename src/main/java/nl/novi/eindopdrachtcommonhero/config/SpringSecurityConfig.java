@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtcommonhero.config;
 
 import nl.novi.eindopdrachtcommonhero.filter.JwtRequestFilter;
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,39 +20,39 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
+    @Autowired
     JwtUtil jwtUtil;
-    private final JwtRequestFilter jwtRequestFilter;
 
-    public SpringSecurityConfig(JwtUtil jwtUtil, JwtRequestFilter jwtRequestFilter) {
-        this.jwtUtil = jwtUtil;
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     @Override
-    public UserDetailsService userDetailsServiceBean() throws Exception {
-        return super.userDetailsServiceBean();
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 
-    @Override
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return super.userDetailsService();
+    }
+
+    @Autowired
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.inMemoryAuthentication()
-
-                .withUser("user").password("password").roles("USER").and()
-                .withUser("admin").password("{noop}password").roles("USER", "ADMIN");
+        auth
+                .jdbcAuthentication()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select email, password, enabled from users where email=?")
+                .authoritiesByUsernameQuery("select email, role from users where email=?");
     }
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -62,9 +63,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .httpBasic().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
 //                .antMatchers(HttpMethod.POST, "/signin").permitAll()
@@ -81,16 +83,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 //                .antMatchers(HttpMethod.DELETE, "/gebruikers/del/**").hasRole("ADMIN")
 //                .and()
 //                .authorizeRequests().anyRequest().authenticated()
-                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                .antMatchers(HttpMethod.POST, "/authenticate/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/vacancies").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                 .antMatchers("/authenticate").permitAll()
-                .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JwtRequestFilter(jwtUtil, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
+    }
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
     }

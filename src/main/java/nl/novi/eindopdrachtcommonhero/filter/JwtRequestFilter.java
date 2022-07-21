@@ -1,6 +1,5 @@
 package nl.novi.eindopdrachtcommonhero.filter;
-
-import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
+//import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,12 +19,12 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserDetailsService UserDetailsService;
     private final JwtUtil jwtUtil;
 
-    public JwtRequestFilter(JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService){
+    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsService UserDetailsService){
         this.jwtUtil = jwtUtil;
-        this.customUserDetailsService = customUserDetailsService;
+        this.UserDetailsService = UserDetailsService;
     }
 
     @Override
@@ -40,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String username = this.jwtUtil.extractUsername(jwt);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = this.UserDetailsService.loadUserByUsername(username);
 
                 if (this.jwtUtil.validateToken(jwt, userDetails)) {
 
