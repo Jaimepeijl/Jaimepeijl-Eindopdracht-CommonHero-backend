@@ -1,12 +1,10 @@
 package nl.novi.eindopdrachtcommonhero.models;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name="vacancies")
-public class Vacancy {
+@Table(name="vacancy-search")
+public class VacancySearch {
 
     @Id
     @GeneratedValue(strategy= GenerationType.TABLE)
@@ -15,7 +13,6 @@ public class Vacancy {
     private String publisher;
     private String title;
     private int hours;
-    private String vactype;
     private String description;
 
     @OneToOne
@@ -35,10 +32,6 @@ public class Vacancy {
 
     public int getHours() {
         return hours;
-    }
-
-    public String getVactype() {
-        return vactype;
     }
 
     public String getDescription() {
@@ -65,9 +58,6 @@ public class Vacancy {
         this.hours = hours;
     }
 
-    public void setVactype(String vactype) {
-        this.vactype = vactype;
-    }
     public void setDescription(String description) {
         this.description = description;
     }

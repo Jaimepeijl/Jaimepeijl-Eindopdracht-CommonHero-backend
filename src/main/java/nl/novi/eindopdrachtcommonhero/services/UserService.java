@@ -96,6 +96,7 @@ public class UserService {
         user.setName(userData.getName());
         user.setCity(userData.getCity());
 
+
         return user;
     }
 
@@ -108,15 +109,16 @@ public class UserService {
                 user.getEmail(),
                 user.getName(),
                 user.getCity(),
+                user.getFile(),
                 user.getAuthorities()
         );
     }
 
-    public void assignPhotoToUser(String name, String username) {
+    public void assignPhotoToUser(String fileName, String username) {
 
         Optional<User> optionalUser = userRepository.findById(username);
 
-        Optional<FileUploadResponse> fileUploadResponse = uploadRepository.findByFileName(name);
+        Optional<FileUploadResponse> fileUploadResponse = uploadRepository.findByFileName(fileName);
 
         if (optionalUser.isPresent() && fileUploadResponse.isPresent()) {
 

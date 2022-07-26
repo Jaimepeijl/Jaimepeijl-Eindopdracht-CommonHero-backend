@@ -1,12 +1,11 @@
 package nl.novi.eindopdrachtcommonhero.controllers.dto;
 
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
-import nl.novi.eindopdrachtcommonhero.models.User;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-public class VacancyRequest {
+public class VacancyOfferRequest {
 
     @GeneratedValue(strategy= GenerationType.TABLE)
     public Long id;
@@ -14,7 +13,6 @@ public class VacancyRequest {
     public String publisher;
     public String title;
     public int hours;
-    public String vactype;
     public String description;
 
     public FileUploadResponse file;
@@ -32,12 +30,6 @@ public class VacancyRequest {
 }
     public int getHours() {
         return hours;
-    }
-
-
-
-    public String getVactype() {
-        return vactype;
     }
 
     public String getDescription() {

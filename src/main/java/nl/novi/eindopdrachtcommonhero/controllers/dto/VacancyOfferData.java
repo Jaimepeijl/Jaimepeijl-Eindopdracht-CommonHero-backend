@@ -3,20 +3,18 @@ package nl.novi.eindopdrachtcommonhero.controllers.dto;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-public class VacancyData {
+public class VacancyOfferData {
     @GeneratedValue(strategy= GenerationType.TABLE)
     public Long id;
     public String publisher;
     private String title;
     public int hours;
-    public String vactype;
     public String description;
 
-    public VacancyData(String publisher, String title, int hours, String vactype, String description) {
+    public VacancyOfferData(String publisher, String title, int hours, String description) {
         this.publisher = publisher;
         this.title = title;
         this.hours = hours;
-        this.vactype = vactype;
         this.description = description;
     }
 
@@ -34,10 +32,6 @@ public class VacancyData {
 
     public int getHours() {
         return hours;
-    }
-
-    public String getVactype() {
-        return vactype;
     }
 
     public String getDescription() {
@@ -58,10 +52,6 @@ public class VacancyData {
 
     public void setHours(int hours) {
         this.hours = hours;
-    }
-
-    public void setVactype(String vactype) {
-        this.vactype = vactype;
     }
 
     public void setDescription(String description) {

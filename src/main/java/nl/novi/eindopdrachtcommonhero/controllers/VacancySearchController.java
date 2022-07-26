@@ -1,13 +1,15 @@
 package nl.novi.eindopdrachtcommonhero.controllers;
 
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyData;
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyRequest;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferData;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferRequest;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchData;
+import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
-import nl.novi.eindopdrachtcommonhero.models.Vacancy;
-import nl.novi.eindopdrachtcommonhero.services.VacancyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import nl.novi.eindopdrachtcommonhero.models.VacancySearch;
+import nl.novi.eindopdrachtcommonhero.services.VacancyOfferService;
+import nl.novi.eindopdrachtcommonhero.services.VacancySearchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,68 +21,68 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/vacancies")
-public class VacancyController {
+@RequestMapping("/vacancies/search")
+public class VacancySearchController {
 
-    private final VacancyService vacancyService;
+    private final VacancySearchService vacancyService;
     private final PhotoController photoController;
 
-    public VacancyController(VacancyService vacancyService, PhotoController photoController) {
+    public VacancySearchController(VacancySearchService vacancyService, PhotoController photoController) {
         this.vacancyService = vacancyService;
         this.photoController = photoController;
     }
 
     @GetMapping
     @Transactional
-    public List<Vacancy> getVacancies(){
-        List<Vacancy> vacancies;
+    public List<VacancySearch> getSearchVacancies(){
+        List<VacancySearch> vacancies;
 
-        vacancies  = vacancyService.getVacancies();
+        vacancies  = vacancyService.getSearchVacancies();
 
         return vacancies;
     }
 
     @PostMapping
-    public ResponseEntity<Object> createVacancy(@RequestBody VacancyRequest vacancyRequest){
+    public ResponseEntity<Object> createSearchVacancy(@RequestBody VacancySearchRequest vacancySearchRequest){
         try{
-        vacancyService.createVacancy(vacancyRequest);
+        vacancyService.createSearchVacancy(vacancySearchRequest);
         return new ResponseEntity<>("Vacature aangemaakt", HttpStatus.CREATED);
         } catch(BadRequestException e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/vacancies/{id}")
+    @GetMapping("/{id}")
     public void getVacancy(@PathVariable Long id){
         try {
-            this.vacancyService.getVacancy(id);
+            this.vacancyService.getSearchVacancy(id);
         } catch (VacancyNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping()
-    public VacancyData updateVacancy(@RequestBody VacancyRequest vacancyRequest){
+    public VacancySearchData updateVacancy(@RequestBody VacancySearchRequest vacancySearchRequest){
         try{
-            return vacancyService.updateVacancy(vacancyRequest.id, vacancyRequest);
+            return vacancyService.updateVacancySearch(vacancySearchRequest.id, vacancySearchRequest);
         } catch(VacancyNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/vacancies/{id}")
-    public void deleteVacancy(@PathVariable Long id){
+    public void deleteSearchVacancy(@PathVariable Long id){
         try{
-            this.vacancyService.deleteVacancy(id);
+            this.vacancyService.deleteSearchVacancy(id);
         } catch (VacancyNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/vacancies/{id}/photo")
-    public void assignPhotoToVacancy(@PathVariable("id") Long id, @RequestBody MultipartFile file){
+    public void assignPhotoToVacancySearch(@PathVariable("id") Long id, @RequestBody MultipartFile file){
         FileUploadResponse photo = photoController.singleFileUpload(file);
 
-        vacancyService.assignPhotoToVacancy(photo.getFileName(), id);
+        vacancyService.assignPhotoToVacancySearch(photo.getFileName(), id);
     }
 }

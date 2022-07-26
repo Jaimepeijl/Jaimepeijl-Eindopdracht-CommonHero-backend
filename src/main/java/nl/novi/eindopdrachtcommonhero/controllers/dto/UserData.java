@@ -26,22 +26,24 @@ public class UserData {
     public Set<Authority> authority;
     boolean enabled = true;
 
-    public UserData(Long id, String username, String password, String email, String name, String city, Set<Authority> authority) {
+    @OneToOne
+    FileUploadResponse file;
+
+    public Set<Authority> authorities;
+
+    public UserData(Long id, String username, String password, String email, String name, String city, FileUploadResponse file, Set<Authority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.name = name;
         this.city = city;
-        this.authorities = authority;
+        this.file = file;
+        this.authorities = authorities;
     }
 
     public UserData() {
     }
-
-    FileUploadResponse file;
-
-    public Set<Authority> authorities;
 
     public String getUsername() {
         return username;
@@ -65,10 +67,13 @@ public class UserData {
         return authorities;
     }
 
+    public FileUploadResponse getFile() {
+        return file;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -86,5 +91,8 @@ public class UserData {
     }
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+    public void setFile(FileUploadResponse file) {
+        this.file = file;
     }
 }
