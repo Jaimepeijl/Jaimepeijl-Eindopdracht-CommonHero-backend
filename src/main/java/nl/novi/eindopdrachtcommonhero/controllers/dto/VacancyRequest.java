@@ -4,16 +4,17 @@ import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.User;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 public class VacancyRequest {
 
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.TABLE)
     public Long id;
 
     public String publisher;
-    private String title;
+    public String title;
     public int hours;
-    public String searchOrOffer;
+    public String vactype;
     public String description;
 
     public FileUploadResponse file;
@@ -35,8 +36,8 @@ public class VacancyRequest {
 
 
 
-    public String isSearchOrOffer() {
-        return searchOrOffer;
+    public String getVactype() {
+        return vactype;
     }
 
     public String getDescription() {

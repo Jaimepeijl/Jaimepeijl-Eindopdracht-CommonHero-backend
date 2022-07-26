@@ -28,8 +28,8 @@ public class UserService {
     @Autowired
     FileUploadRepository uploadRepository;
 
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -59,8 +59,7 @@ public class UserService {
             User user = new User();
             user.setId(userData.getId());
             user.setUsername(userData.getUsername());
-            user.setPassword(userData.getPassword());
-            user.setPassword(user.getPassword());
+            user.setPassword(passwordEncoder.encode(userData.getPassword()));
             user.setEmail(userData.getEmail());
             user.setName(userData.getName());
             user.setCity(userData.getCity());
@@ -100,16 +99,18 @@ public class UserService {
         return user;
     }
 
-//    public UserData createUserDto(User user) {
-//        return new UserData(
-//                user.getId(),
-//                user.getUsername(),
-//                user.getPassword(),
-//                user.getEmail(),
-//                user.getName(),
-//                user.getCity()
-//        );
-//    }
+    public UserData createUserData(User user) {
+        return new UserData(
+
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getName(),
+                user.getCity(),
+                user.getAuthorities()
+        );
+    }
 
     public void assignPhotoToUser(String name, String username) {
 

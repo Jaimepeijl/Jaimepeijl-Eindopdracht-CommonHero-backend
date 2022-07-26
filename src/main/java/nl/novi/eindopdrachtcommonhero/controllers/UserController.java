@@ -45,12 +45,13 @@ public class UserController {
         return users;
     }
     @GetMapping("/{username}")
-    public void getUser(@PathVariable String username){
+    public ResponseEntity<UserData> getUser(@PathVariable String username){
         try {
-            this.userService.getUser(username);
+            userService.createUserData(userService.getUser(username));
         } catch (UserNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+        return ResponseEntity.ok().body(userService.createUserData(userService.getUser(username)));
     }
 
     @PostMapping("/signup")
@@ -76,7 +77,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/gebruikers/del/{username}")
+    @DeleteMapping("/del/{username}")
     public void deleteUser(@PathVariable String username){
         try{
             this.userService.deleteUser(username);

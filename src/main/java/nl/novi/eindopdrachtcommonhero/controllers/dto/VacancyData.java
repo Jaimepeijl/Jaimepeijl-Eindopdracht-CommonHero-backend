@@ -1,20 +1,22 @@
 package nl.novi.eindopdrachtcommonhero.controllers.dto;
 
-import nl.novi.eindopdrachtcommonhero.models.User;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 public class VacancyData {
+    @GeneratedValue(strategy= GenerationType.TABLE)
     public Long id;
     public String publisher;
     private String title;
     public int hours;
-    public String searchOrOffer;
+    public String vactype;
     public String description;
 
-    public VacancyData(String publisher, String title, int hours, String searchOrOffer, String description) {
+    public VacancyData(String publisher, String title, int hours, String vactype, String description) {
         this.publisher = publisher;
         this.title = title;
         this.hours = hours;
-        this.searchOrOffer = searchOrOffer;
+        this.vactype = vactype;
         this.description = description;
     }
 
@@ -34,8 +36,8 @@ public class VacancyData {
         return hours;
     }
 
-    public String isSearchOrOffer() {
-        return searchOrOffer;
+    public String getVactype() {
+        return vactype;
     }
 
     public String getDescription() {
@@ -58,8 +60,8 @@ public class VacancyData {
         this.hours = hours;
     }
 
-    public void setSearchOrOffer(String searchOrOffer) {
-        this.searchOrOffer = searchOrOffer;
+    public void setVactype(String vactype) {
+        this.vactype = vactype;
     }
 
     public void setDescription(String description) {

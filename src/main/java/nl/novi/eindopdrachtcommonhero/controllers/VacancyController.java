@@ -2,6 +2,7 @@ package nl.novi.eindopdrachtcommonhero.controllers;
 
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyRequest;
+import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.Vacancy;
@@ -41,11 +42,12 @@ public class VacancyController {
 
     @PostMapping
     public ResponseEntity<Object> createVacancy(@RequestBody VacancyRequest vacancyRequest){
-
-        Vacancy vacancy = vacancyService.createVacancy(vacancyRequest);
-
-        return ResponseEntity.created(null).body(vacancy);
-
+        try{
+        vacancyService.createVacancy(vacancyRequest);
+        return new ResponseEntity<>("Vacature aangemaakt", HttpStatus.CREATED);
+        } catch(BadRequestException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/vacancies/{id}")

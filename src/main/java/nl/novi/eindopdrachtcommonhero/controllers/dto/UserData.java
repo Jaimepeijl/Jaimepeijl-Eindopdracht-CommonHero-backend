@@ -36,6 +36,9 @@ public class UserData {
         this.authorities = authority;
     }
 
+    public UserData() {
+    }
+
     FileUploadResponse file;
 
     public Set<Authority> authorities;

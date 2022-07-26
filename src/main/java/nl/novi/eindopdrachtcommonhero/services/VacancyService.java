@@ -55,6 +55,7 @@ public class VacancyService {
         Vacancy vacancy = this.getVacancy(id);
 
 //        vacancy.setPublisher(newVacancy.publisher);
+        vacancy.setTitle(newVacancy.title);
         vacancy.setHours(newVacancy.hours);
         vacancy.setDescription(newVacancy.description);
 
@@ -69,7 +70,7 @@ public class VacancyService {
         vacancy.setPublisher(vacancyRequest.getPublisher());
         vacancy.setTitle(vacancyRequest.getTitle());
         vacancy.setHours(vacancyRequest.getHours());
-        vacancy.setSearchOrOffer(vacancyRequest.isSearchOrOffer());
+        vacancy.setVactype(vacancyRequest.getVactype());
         vacancy.setDescription(vacancyRequest.getDescription());
 
         return vacancy;
@@ -80,7 +81,7 @@ public class VacancyService {
                 vacancy.getPublisher(),
                 vacancy.getTitle(),
                 vacancy.getHours(),
-                vacancy.isSearchOrOffer(),
+                vacancy.getVactype(),
                 vacancy.getDescription()
         );
     }
