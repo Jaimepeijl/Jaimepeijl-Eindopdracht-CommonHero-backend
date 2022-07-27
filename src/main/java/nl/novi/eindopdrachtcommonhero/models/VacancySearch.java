@@ -3,7 +3,7 @@ package nl.novi.eindopdrachtcommonhero.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name="vacancy-search")
+@Table(name="vacancy_search")
 public class VacancySearch {
 
     @Id

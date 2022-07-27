@@ -9,7 +9,6 @@ public class UserRequest {
     public String email;
     public String name;
     public String city;
-    boolean enabled = true;
 
     FileUploadResponse file;
 

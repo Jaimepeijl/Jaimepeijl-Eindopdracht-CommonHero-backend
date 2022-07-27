@@ -11,6 +11,6 @@ values(1, 'Jaime', 'Rechtenstudent biedt hulp aan', 5, 'Ik ben een 3e jaars rech
        (2, 'Erik', 'Kan helpen bij klusjes', 3, 'Sinds mijn pensioen mis ik het klussen heel erg. Ik ben een lange tijd timmerman geweest en heb daarnaast nog andere klussen gedaan. Ik zou je graag voor niks willen helpen met klussen in en rondom het huis. Scheelt je weer iemand inhuren.'),
        (3, 'Erik', 'kan je altijd een lift geven', 1, 'Ik vind het leuk om te rijden en heb een mooie auto. Mocht iemand een keer een lift nodig hebben ergens heen dan kan ik je wellicht brengen. Scheelt weer een taxi ritje');
 
--- insert into vacancy_search(id, publisher, title, hours, description)
--- values(1, 'Jaime', 'Oma naar een verjaardag rijden', 1, 'Mijn oma is 87 en mag niet meer zelf rijden. Ze wil erg graag naar de verjaardag van een goede vriendin in Arnhem. Ik moet helaas werken. Zou iemand haar van Utrecht naar Arnhem kunnen rijden op zaterdag 15 augustus?'),
---        (2, 'Erik', 'Helpen op een AZC', 3, 'Wij willen op het AZC in Dondrecht graag een mooie dag bezorgen aan alle vluchtelingen. We hebben nog een kok nodig en iemand die Arabisch spreekt. Ik hoor graag van u.');
+insert into vacancy_search(id, publisher, title, hours, description)
+values(1, 'Jaime', 'Oma naar een verjaardag rijden', 1, 'Mijn oma is 87 en mag niet meer zelf rijden. Ze wil erg graag naar de verjaardag van een goede vriendin in Arnhem. Ik moet helaas werken. Zou iemand haar van Utrecht naar Arnhem kunnen rijden op zaterdag 15 augustus?'),
+       (2, 'Erik', 'Helpen op een AZC', 3, 'Wij willen op het AZC in Dondrecht graag een mooie dag bezorgen aan alle vluchtelingen. We hebben nog een kok nodig en iemand die Arabisch spreekt. Ik hoor graag van u.');

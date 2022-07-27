@@ -70,7 +70,8 @@ public class UserController {
     @PutMapping("/{username}")
     public ResponseEntity<Object> updateUser(@PathVariable String username, @RequestBody UserRequest userRequest){
         try{
-            userService.updateUser(userRequest.username, userRequest);
+            userService.getUser(username);
+            userService.updateUser(username, userRequest);
             return new ResponseEntity<>("Gebruiker aangepast", HttpStatus.OK);
         } catch(UserNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

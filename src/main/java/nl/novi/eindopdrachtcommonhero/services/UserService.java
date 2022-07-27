@@ -71,19 +71,16 @@ public class UserService {
             throw new BadRequestException("Kan gebruiker niet aanmaken");
         }}
 
-    public Boolean updateUser(String username, UserRequest newUser) {
+    public void updateUser(String username, UserRequest newUser) {
 
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
 
         User user = this.getUser(username);
-        user.setPassword(newUser.password);
-        user.setUsername(newUser.username);
         user.setName(newUser.name);
         user.setCity(newUser.city);
         user.setEmail(newUser.email);
 
         this.userRepository.save(user);
-        return true;
     }
 
     public User toUser(UserData userData) {
