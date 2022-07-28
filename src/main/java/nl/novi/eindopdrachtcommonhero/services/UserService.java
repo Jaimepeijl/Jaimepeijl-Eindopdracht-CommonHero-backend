@@ -76,9 +76,12 @@ public class UserService {
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
 
         User user = this.getUser(username);
-        user.setName(newUser.name);
-        user.setCity(newUser.city);
-        user.setEmail(newUser.email);
+        if(newUser.name != null){
+                user.setName(newUser.name);}
+        if(newUser.city != null){
+        user.setCity(newUser.city);}
+        if(newUser.email != null){
+        user.setEmail(newUser.email);}
 
         this.userRepository.save(user);
     }

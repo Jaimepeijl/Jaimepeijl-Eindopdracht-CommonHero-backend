@@ -1,17 +1,13 @@
 package nl.novi.eindopdrachtcommonhero.services;
 
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferData;
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferRequest;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
-import nl.novi.eindopdrachtcommonhero.models.VacancyOffer;
 import nl.novi.eindopdrachtcommonhero.models.VacancySearch;
 import nl.novi.eindopdrachtcommonhero.repositories.FileUploadRepository;
-import nl.novi.eindopdrachtcommonhero.repositories.VacancyOfferRepository;
 import nl.novi.eindopdrachtcommonhero.repositories.VacancySearchRepository;
 import org.springframework.stereotype.Service;
 
@@ -59,10 +55,10 @@ public class VacancySearchService {
 
         VacancySearch vacancySearch = this.getSearchVacancy(id);
 
-//        vacancySearch.setPublisher(newVacancy.publisher);
         vacancySearch.setTitle(newVacancy.title);
         vacancySearch.setHours(newVacancy.hours);
         vacancySearch.setDescription(newVacancy.description);
+        vacancySearch.setCity(newVacancy.city);
 
         this.vacancySearchRepository.save(vacancySearch);
         return this.createVacancySearchData(vacancySearch);
@@ -76,6 +72,7 @@ public class VacancySearchService {
         vacancy.setTitle(vacancySearchRequest.getTitle());
         vacancy.setHours(vacancySearchRequest.getHours());
         vacancy.setDescription(vacancySearchRequest.getDescription());
+        vacancy.setCity(vacancySearchRequest.getCity());
 
         return vacancy;
     }
@@ -84,7 +81,8 @@ public class VacancySearchService {
                 vacancySearch.getPublisher(),
                 vacancySearch.getTitle(),
                 vacancySearch.getHours(),
-                vacancySearch.getDescription()
+                vacancySearch.getDescription(),
+                vacancySearch.getCity()
         );
     }
     public void assignPhotoToVacancySearch(String fileName, Long id) {

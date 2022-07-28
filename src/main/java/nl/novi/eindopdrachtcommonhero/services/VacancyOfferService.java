@@ -2,17 +2,13 @@ package nl.novi.eindopdrachtcommonhero.services;
 
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferRequest;
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchData;
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.VacancyOffer;
-import nl.novi.eindopdrachtcommonhero.models.VacancySearch;
 import nl.novi.eindopdrachtcommonhero.repositories.FileUploadRepository;
 import nl.novi.eindopdrachtcommonhero.repositories.VacancyOfferRepository;
-import nl.novi.eindopdrachtcommonhero.repositories.VacancySearchRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,10 +53,10 @@ public class VacancyOfferService {
 
         VacancyOffer vacancyOffer = this.getOfferVacancy(id);
 
-//        vacancyOffer.setPublisher(newVacancy.publisher);
         vacancyOffer.setTitle(newVacancy.title);
         vacancyOffer.setHours(newVacancy.hours);
         vacancyOffer.setDescription(newVacancy.description);
+        vacancyOffer.setCity(newVacancy.city);
 
         this.vacancyOfferRepository.save(vacancyOffer);
         return this.createVacancyOfferData(vacancyOffer);
@@ -74,6 +70,7 @@ public class VacancyOfferService {
         vacancy.setTitle(vacancyOfferRequest.getTitle());
         vacancy.setHours(vacancyOfferRequest.getHours());
         vacancy.setDescription(vacancyOfferRequest.getDescription());
+        vacancy.setCity(vacancyOfferRequest.getCity());
 
         return vacancy;
     }
@@ -83,7 +80,8 @@ public class VacancyOfferService {
                 vacancyOffer.getPublisher(),
                 vacancyOffer.getTitle(),
                 vacancyOffer.getHours(),
-                vacancyOffer.getDescription()
+                vacancyOffer.getDescription(),
+                vacancyOffer.getCity()
         );
     }
 
