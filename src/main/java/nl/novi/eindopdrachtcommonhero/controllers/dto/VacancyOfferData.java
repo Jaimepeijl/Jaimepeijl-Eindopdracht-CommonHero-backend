@@ -4,7 +4,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 public class VacancyOfferData {
-    @GeneratedValue(strategy= GenerationType.TABLE)
+    @GeneratedValue(generator = "sequence-generator")
     public Long id;
     public String publisher;
     private String title;

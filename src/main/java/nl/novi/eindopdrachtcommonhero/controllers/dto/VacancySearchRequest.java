@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 
 public class VacancySearchRequest {
 
-    @GeneratedValue(strategy= GenerationType.TABLE)
+    @GeneratedValue(generator = "sequence-generator")
     public Long id;
 
     public String publisher;

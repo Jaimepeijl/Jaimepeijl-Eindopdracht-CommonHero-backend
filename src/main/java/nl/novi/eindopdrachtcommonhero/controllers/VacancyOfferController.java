@@ -40,19 +40,19 @@ public class VacancyOfferController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createOfferVacancy(@RequestBody VacancyOfferRequest vacancyOfferRequest){
+    public VacancyOffer createOfferVacancy(@RequestBody VacancyOfferRequest vacancyOfferRequest){
         try{
-        vacancyService.createOfferVacancy(vacancyOfferRequest);
-        return new ResponseEntity<>("Vacature aangemaakt", HttpStatus.CREATED);
+        VacancyOffer vacancyOffer = vacancyService.createOfferVacancy(vacancyOfferRequest);
+        return vacancyOffer;
         } catch(BadRequestException e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{id}")
-    public void getOfferVacancy(@PathVariable Long id){
+    public VacancyOffer getOfferVacancy(@PathVariable Long id){
         try {
-            this.vacancyService.getOfferVacancy(id);
+            return vacancyService.getOfferVacancy(id);
         } catch (VacancyNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }

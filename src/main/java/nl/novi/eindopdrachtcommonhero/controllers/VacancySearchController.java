@@ -7,6 +7,7 @@ import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
+import nl.novi.eindopdrachtcommonhero.models.VacancyOffer;
 import nl.novi.eindopdrachtcommonhero.models.VacancySearch;
 import nl.novi.eindopdrachtcommonhero.services.VacancyOfferService;
 import nl.novi.eindopdrachtcommonhero.services.VacancySearchService;
@@ -43,19 +44,19 @@ public class VacancySearchController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createSearchVacancy(@RequestBody VacancySearchRequest vacancySearchRequest){
+    public VacancySearch createSearchVacancy(@RequestBody VacancySearchRequest vacancySearchRequest){
         try{
-        vacancyService.createSearchVacancy(vacancySearchRequest);
-        return new ResponseEntity<>("Vacature aangemaakt", HttpStatus.CREATED);
+        VacancySearch vacancySearch = vacancyService.createSearchVacancy(vacancySearchRequest);
+        return vacancySearch;
         } catch(BadRequestException e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/{id}")
-    public void getVacancy(@PathVariable Long id){
+    public VacancySearch getSearchVacancy(@PathVariable Long id){
         try {
-            this.vacancyService.getSearchVacancy(id);
+            return vacancyService.getSearchVacancy(id);
         } catch (VacancyNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
@@ -70,7 +71,7 @@ public class VacancySearchController {
         }
     }
 
-    @DeleteMapping("/vacancies/{id}")
+    @DeleteMapping("/{id}")
     public void deleteSearchVacancy(@PathVariable Long id){
         try{
             this.vacancyService.deleteSearchVacancy(id);
@@ -79,7 +80,7 @@ public class VacancySearchController {
         }
     }
 
-    @PostMapping("/vacancies/{id}/photo")
+    @PostMapping("/{id}/photo")
     public void assignPhotoToVacancySearch(@PathVariable("id") Long id, @RequestBody MultipartFile file){
         FileUploadResponse photo = photoController.singleFileUpload(file);
 

@@ -1,5 +1,8 @@
 package nl.novi.eindopdrachtcommonhero.models;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +10,16 @@ import javax.persistence.*;
 public class VacancySearch {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.TABLE)
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "vacancy_search_sequence"),
+                    @Parameter(name = "initial_value", value = "1003"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
     private Long id;
 
     private String publisher;
