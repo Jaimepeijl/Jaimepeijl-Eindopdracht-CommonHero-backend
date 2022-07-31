@@ -99,11 +99,10 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getAuthorities(username));
     }
 
-    @PostMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+    @PostMapping(value = "/{username}/authorities/{authority}")
+    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         try {
-            String authorityName = (String) fields.get("authority");
-            userService.addAuthority(username, authorityName);
+            userService.addAuthority(username, authority);
             return ResponseEntity.noContent().build();
         }
         catch (Exception ex) {

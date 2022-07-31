@@ -6,11 +6,13 @@ import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
+import nl.novi.eindopdrachtcommonhero.models.User;
 import nl.novi.eindopdrachtcommonhero.models.VacancyOffer;
 import nl.novi.eindopdrachtcommonhero.repositories.FileUploadRepository;
 import nl.novi.eindopdrachtcommonhero.repositories.VacancyOfferRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +21,12 @@ public class VacancyOfferService {
 
     private final VacancyOfferRepository vacancyOfferRepository;
     private final FileUploadRepository uploadRepository;
+    private final UserService userService;
 
-    public VacancyOfferService(VacancyOfferRepository vacancyOfferRepository, FileUploadRepository uploadRepository) {
+    public VacancyOfferService(VacancyOfferRepository vacancyOfferRepository, FileUploadRepository uploadRepository, UserService userService) {
         this.vacancyOfferRepository = vacancyOfferRepository;
         this.uploadRepository = uploadRepository;
+        this.userService = userService;
     }
 
     public List<VacancyOffer> getOfferVacancies(){
