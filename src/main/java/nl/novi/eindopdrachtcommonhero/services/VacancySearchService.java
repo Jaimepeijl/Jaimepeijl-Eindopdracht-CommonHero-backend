@@ -59,6 +59,8 @@ public class VacancySearchService {
         vacancySearch.setHours(newVacancy.hours);
         vacancySearch.setDescription(newVacancy.description);
         vacancySearch.setCity(newVacancy.city);
+        vacancySearch.setRepeats(newVacancy.repeats);
+        vacancySearch.setDate(newVacancy.date);
 
         this.vacancySearchRepository.save(vacancySearch);
         return this.createVacancySearchData(vacancySearch);
@@ -73,6 +75,8 @@ public class VacancySearchService {
         vacancy.setHours(vacancySearchRequest.getHours());
         vacancy.setDescription(vacancySearchRequest.getDescription());
         vacancy.setCity(vacancySearchRequest.getCity());
+        vacancy.setRepeats(vacancySearchRequest.getRepeats());
+        vacancy.setDate(vacancySearchRequest.getDate());
 
         return vacancy;
     }
@@ -82,7 +86,9 @@ public class VacancySearchService {
                 vacancySearch.getTitle(),
                 vacancySearch.getHours(),
                 vacancySearch.getDescription(),
-                vacancySearch.getCity()
+                vacancySearch.getCity(),
+                vacancySearch.getRepeats(),
+                vacancySearch.getDate()
         );
     }
     public void assignPhotoToVacancySearch(String fileName, Long id) {

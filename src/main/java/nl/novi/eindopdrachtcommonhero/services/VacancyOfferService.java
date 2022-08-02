@@ -61,6 +61,8 @@ public class VacancyOfferService {
         vacancyOffer.setHours(newVacancy.hours);
         vacancyOffer.setDescription(newVacancy.description);
         vacancyOffer.setCity(newVacancy.city);
+        vacancyOffer.setRepeats(newVacancy.repeats);
+        vacancyOffer.setDate(newVacancy.date);
 
         this.vacancyOfferRepository.save(vacancyOffer);
         return this.createVacancyOfferData(vacancyOffer);
@@ -75,6 +77,8 @@ public class VacancyOfferService {
         vacancy.setHours(vacancyOfferRequest.getHours());
         vacancy.setDescription(vacancyOfferRequest.getDescription());
         vacancy.setCity(vacancyOfferRequest.getCity());
+        vacancy.setRepeats(vacancyOfferRequest.getRepeats());
+        vacancy.setDate(vacancyOfferRequest.getDate());
 
         return vacancy;
     }
@@ -85,7 +89,9 @@ public class VacancyOfferService {
                 vacancyOffer.getTitle(),
                 vacancyOffer.getHours(),
                 vacancyOffer.getDescription(),
-                vacancyOffer.getCity()
+                vacancyOffer.getCity(),
+                vacancyOffer.getRepeats(),
+                vacancyOffer.getDate()
         );
     }
 

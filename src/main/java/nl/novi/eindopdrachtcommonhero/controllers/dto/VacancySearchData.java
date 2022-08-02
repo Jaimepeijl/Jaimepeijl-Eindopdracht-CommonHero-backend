@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtcommonhero.controllers.dto;
 
 import javax.persistence.GeneratedValue;
+import java.util.Date;
 
 public class VacancySearchData {
     @GeneratedValue(generator = "sequence-generator")
@@ -10,13 +11,17 @@ public class VacancySearchData {
     public int hours;
     public String description;
     public String city;
+    public String repeats;
+    public Date date;
 
-    public VacancySearchData(String publisher, String title, int hours, String description, String city) {
+    public VacancySearchData(String publisher, String title, int hours, String description, String city, String repeats, Date date) {
         this.publisher = publisher;
         this.title = title;
         this.hours = hours;
         this.description = description;
         this.city = city;
+        this.repeats = repeats;
+        this.date = date;
     }
 
     public Long getId() {
@@ -37,6 +42,12 @@ public class VacancySearchData {
     public String getCity() {
         return city;
     }
+    public String getRepeats() {
+        return repeats;
+    }
+    public Date getDate() {
+        return date;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -55,5 +66,11 @@ public class VacancySearchData {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+    public void setRepeats(String repeats) {
+        this.repeats = repeats;
+    }
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

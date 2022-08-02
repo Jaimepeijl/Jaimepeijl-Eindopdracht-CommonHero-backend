@@ -1,9 +1,11 @@
 package nl.novi.eindopdrachtcommonhero.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="vacancy_offer")
@@ -27,6 +29,9 @@ public class VacancyOffer {
     private int hours;
     private String description;
     private String city;
+    private String repeats;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date date;
 
     @OneToOne
     FileUploadResponse file;
@@ -49,6 +54,12 @@ public class VacancyOffer {
     public String getCity() {
         return city;
     }
+    public String getRepeats() {
+        return repeats;
+    }
+    public Date getDate() {
+        return date;
+    }
     public FileUploadResponse getFile() {
         return file;
     }
@@ -70,6 +81,12 @@ public class VacancyOffer {
     }
     public void setCity(String city) {
         this.city = city;
+    }
+    public void setRepeats(String repeats) {
+        this.repeats = repeats;
+    }
+    public void setDate(Date date) {
+        this.date = date;
     }
     public void setFile(FileUploadResponse file) {
         this.file = file;
