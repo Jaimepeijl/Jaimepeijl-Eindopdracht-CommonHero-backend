@@ -1,16 +1,15 @@
 package nl.novi.eindopdrachtcommonhero.controllers.dto;
-
-import javax.persistence.Column;
+import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 
 public class UserRequest {
 
     public Long id;
     public String username;
     public String password;
-    public boolean enabled;
-    public String apikey;
     public String email;
     public String name;
     public String city;
+
+    FileUploadResponse file;
 
 }
