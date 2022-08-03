@@ -3,7 +3,6 @@ package nl.novi.eindopdrachtcommonhero.services;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.UserRequest;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.UserData;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
-import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.UserNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.Authority;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -73,7 +71,7 @@ public class UserService {
 
     public void updateUser(String username, UserRequest newUser) {
 
-        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
+        if (!userRepository.existsById(username)) throw new UserNotFoundException();
 
         User user = this.getUser(username);
         if(newUser.name != null){

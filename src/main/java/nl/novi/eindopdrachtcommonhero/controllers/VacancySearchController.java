@@ -62,9 +62,10 @@ public class VacancySearchController {
         }
     }
 
-    @PutMapping()
-    public VacancySearchData updateVacancy(@RequestBody VacancySearchRequest vacancySearchRequest){
+    @PutMapping("/{id}")
+    public VacancySearchData updateVacancy(@PathVariable Long id, @RequestBody VacancySearchRequest vacancySearchRequest){
         try{
+            vacancyService.getSearchVacancy(id);
             return vacancyService.updateVacancySearch(vacancySearchRequest.id, vacancySearchRequest);
         } catch(VacancyNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

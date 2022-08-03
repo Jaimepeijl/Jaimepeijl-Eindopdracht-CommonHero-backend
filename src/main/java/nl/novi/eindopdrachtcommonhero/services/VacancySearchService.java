@@ -3,7 +3,6 @@ package nl.novi.eindopdrachtcommonhero.services;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
-import nl.novi.eindopdrachtcommonhero.exceptions.RecordNotFoundException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.VacancySearch;
@@ -51,7 +50,7 @@ public class VacancySearchService {
     }
 
     public VacancySearchData updateVacancySearch(Long id, VacancySearchRequest newVacancy) {
-        if (!vacancySearchRepository.existsById(id)) throw new RecordNotFoundException();
+        if (!vacancySearchRepository.existsById(id)) throw new VacancyNotFoundException();
 
         VacancySearch vacancySearch = this.getSearchVacancy(id);
 

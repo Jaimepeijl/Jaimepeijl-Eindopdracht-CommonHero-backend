@@ -7,18 +7,16 @@ import nl.novi.eindopdrachtcommonhero.exceptions.UserNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
 import nl.novi.eindopdrachtcommonhero.models.User;
 import nl.novi.eindopdrachtcommonhero.services.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -58,9 +56,6 @@ public class UserController {
     public ResponseEntity<Object> createUser(@RequestBody UserData userData){
         try{
             userService.createUser(userData);
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-//                .buildAndExpand().toUri();
-
         return new ResponseEntity<>("Gebruiker aangemaakt", HttpStatus.CREATED);}
         catch (BadRequestException e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);

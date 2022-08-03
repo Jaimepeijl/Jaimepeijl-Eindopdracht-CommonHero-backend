@@ -58,9 +58,10 @@ public class VacancyOfferController {
         }
     }
 
-    @PutMapping()
-    public VacancyOfferData updateVacancyOffer(@RequestBody VacancyOfferRequest vacancyOfferRequest){
+    @PutMapping("/{id}")
+    public VacancyOfferData updateVacancyOffer(@PathVariable Long id, @RequestBody VacancyOfferRequest vacancyOfferRequest){
         try{
+            vacancyService.getOfferVacancy(id);
             return vacancyService.updateVacancyOffer(vacancyOfferRequest.id, vacancyOfferRequest);
         } catch(VacancyNotFoundException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

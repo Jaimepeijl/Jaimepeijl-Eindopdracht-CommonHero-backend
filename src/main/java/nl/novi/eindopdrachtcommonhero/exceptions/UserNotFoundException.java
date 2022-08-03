@@ -10,7 +10,7 @@ public class UserNotFoundException extends RuntimeException {
         super("De gebruiker " + username + " is helaas niet gevonden");
     }
     public UserNotFoundException() {
-        super("The user is not found!");
+        super("De gebruiker is niet gevonden!");
     }
 
 }
