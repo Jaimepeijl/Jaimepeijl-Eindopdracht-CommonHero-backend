@@ -1,6 +1,5 @@
 package nl.novi.eindopdrachtcommonhero.controllers.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import nl.novi.eindopdrachtcommonhero.models.Authority;
 
 import lombok.Data;

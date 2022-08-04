@@ -1,5 +1,6 @@
 package nl.novi.eindopdrachtcommonhero.controllers;
 
+import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.payload.AuthenticationRequest;
 import nl.novi.eindopdrachtcommonhero.payload.AuthenticationResponse;
 import nl.novi.eindopdrachtcommonhero.services.UserAuthService;
@@ -18,8 +19,12 @@ public class AuthenticationController {
 
     @PostMapping()
     public ResponseEntity<Object> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
-        AuthenticationResponse authenticationResponse = userAuthService.authenticateUser(authenticationRequest);
-        return ResponseEntity.ok(authenticationResponse);
+        try {
+            AuthenticationResponse authenticationResponse = userAuthService.authenticateUser(authenticationRequest);
+            return ResponseEntity.ok(authenticationResponse);
+        } catch (Exception ex){
+            throw new BadRequestException("Verkeerde gebruikersnaam of wachtwoord");
+        }
     }
 }
 

@@ -1,18 +1,13 @@
 package nl.novi.eindopdrachtcommonhero.controllers;
 
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferData;
-import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancyOfferRequest;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchData;
 import nl.novi.eindopdrachtcommonhero.controllers.dto.VacancySearchRequest;
 import nl.novi.eindopdrachtcommonhero.exceptions.BadRequestException;
 import nl.novi.eindopdrachtcommonhero.exceptions.VacancyNotFoundException;
 import nl.novi.eindopdrachtcommonhero.models.FileUploadResponse;
-import nl.novi.eindopdrachtcommonhero.models.VacancyOffer;
 import nl.novi.eindopdrachtcommonhero.models.VacancySearch;
-import nl.novi.eindopdrachtcommonhero.services.VacancyOfferService;
 import nl.novi.eindopdrachtcommonhero.services.VacancySearchService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
