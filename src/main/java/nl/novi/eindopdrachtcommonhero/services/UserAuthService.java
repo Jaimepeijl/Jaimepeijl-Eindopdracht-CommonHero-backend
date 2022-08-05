@@ -34,7 +34,7 @@ public class UserAuthService {
             final String jwt = jwtUtil.generateToken(userDetails);
             return new AuthenticationResponse(jwt);
         } catch (Exception ex) {
-            throw new BadRequestException("Incorrect username or password");
+            throw new BadRequestException("Verkeerde gebruikersnaam of wachtwoord");
         }
     }
 

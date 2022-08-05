@@ -1,6 +1,4 @@
 package nl.novi.eindopdrachtcommonhero.models;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.HashSet;

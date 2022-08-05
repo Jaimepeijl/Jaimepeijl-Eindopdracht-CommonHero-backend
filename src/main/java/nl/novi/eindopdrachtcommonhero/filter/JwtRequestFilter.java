@@ -1,5 +1,5 @@
 package nl.novi.eindopdrachtcommonhero.filter;
-//import nl.novi.eindopdrachtcommonhero.services.CustomUserDetailsService;
+
 import nl.novi.eindopdrachtcommonhero.utils.JwtUtil;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
